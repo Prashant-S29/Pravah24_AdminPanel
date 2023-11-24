@@ -13,6 +13,9 @@
 /.next/
 /out/
 
+# env flies
+.env*
+
 # production
 /build
 
