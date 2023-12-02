@@ -20,7 +20,7 @@ const HOME = () => {
     <>
       <div className="w-full">
         <NAVBAR />
-        <EVENTS_LIST />
+        {/* <EVENTS_LIST /> */}
       </div>
     </>
   );
