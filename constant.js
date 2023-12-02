@@ -3,7 +3,7 @@ import { dj } from "@/assets"
 const testEventDetails = [
     {
         eventName: "Paintball Arena",
-        eventPhotoLink: dj,
+        eventPhotoLink: "https://res.cloudinary.com/denl2iizs/image/upload/v1700624743/pravah2k24/gallery/qfpgbpf5z1luyd1rqwhp.png",
         eventCategoryID: "non_tech",
         eventType: "Team",
         eventRegistrationFee: "200",
@@ -15,7 +15,7 @@ const testEventDetails = [
     },
     {
         eventName: "Paintball Arena",
-        eventPhotoLink: dj,
+        eventPhotoLink: "https://res.cloudinary.com/denl2iizs/image/upload/v1700624743/pravah2k24/gallery/qfpgbpf5z1luyd1rqwhp.png",
         eventCategoryID: "non_tech",
         eventType: "Team",
         eventRegistrationFee: "200",
@@ -27,7 +27,7 @@ const testEventDetails = [
     },
     {
         eventName: "Startup Expo",
-        eventPhotoLink: dj,
+        eventPhotoLink: "https://res.cloudinary.com/denl2iizs/image/upload/v1700624743/pravah2k24/gallery/qfpgbpf5z1luyd1rqwhp.png",
         eventCategoryID: "tech",
         eventType: "Team",
         eventRegistrationFee: "200",
@@ -39,7 +39,7 @@ const testEventDetails = [
     },
     {
         eventName: "Sur",
-        eventPhotoLink: dj,
+        eventPhotoLink: "https://res.cloudinary.com/denl2iizs/image/upload/v1700624743/pravah2k24/gallery/qfpgbpf5z1luyd1rqwhp.png",
         eventCategoryID: "cultural",
         eventType: "Team",
         eventRegistrationFee: "200",
@@ -51,7 +51,7 @@ const testEventDetails = [
     },
     {
         eventName: "TOGGLE",
-        eventPhotoLink: dj,
+        eventPhotoLink: "https://res.cloudinary.com/denl2iizs/image/upload/v1700624743/pravah2k24/gallery/qfpgbpf5z1luyd1rqwhp.png",
         eventCategoryID: "literary",
         eventType: "Team",
         eventRegistrationFee: "200",
@@ -63,7 +63,7 @@ const testEventDetails = [
     },
     {
         eventName: "Bhagirath",
-        eventPhotoLink: dj,
+        eventPhotoLink: "https://res.cloudinary.com/denl2iizs/image/upload/v1700624743/pravah2k24/gallery/qfpgbpf5z1luyd1rqwhp.png",
         eventCategoryID: "social",
         eventType: "Team",
         eventRegistrationFee: "200",
@@ -75,7 +75,7 @@ const testEventDetails = [
     },
     {
         eventName: "Valorant",
-        eventPhotoLink: dj,
+        eventPhotoLink: "https://res.cloudinary.com/denl2iizs/image/upload/v1700624743/pravah2k24/gallery/qfpgbpf5z1luyd1rqwhp.png",
         eventCategoryID: "esports",
         eventType: "Team",
         eventRegistrationFee: "200",

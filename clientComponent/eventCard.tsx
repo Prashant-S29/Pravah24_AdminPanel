@@ -3,147 +3,302 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const EVENT_REG_CARDS = ({
+const EVENT_CARDS = ({
   index,
   eventDetail,
 }: {
   index: number;
   eventDetail: any;
 }) => {
+  const router = useRouter();
+  const [detailDisplay, setDetailDisplay] = useState(false);
+  const [adminSecretKey, setAdminSecretKey] = useState("");
+  const [userConfirmationCardDisplay, setUserConfirmationCardDisplay] =
+    useState(false);
+
+  const [errorMessageDisplay, setErrorMessageDisplay] = useState({
+    display: false,
+    message: "",
+  });
+  const [successMessageDisplay, setSuccessMessageDisplay] = useState({
+    display: false,
+    message: "",
+  });
+
+  const deleteEvent = async () => {
+    await fetch(
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}?id=${eventDetail._id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    router.refresh();
+    setSuccessMessageDisplay({
+      display: true,
+      message: "Successfully deleted the event",
+    });
+    setTimeout(() => {
+      setSuccessMessageDisplay({
+        display: false,
+        message: "",
+      });
+    }, 2000);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (adminSecretKey === process.env.NEXT_PUBLIC_ADMIN_SERCET_KEY) {
+      setUserConfirmationCardDisplay(false);
+      deleteEvent();
+      setAdminSecretKey("");
+    } else {
+      setAdminSecretKey("");
+      setUserConfirmationCardDisplay(false);
+      setErrorMessageDisplay({
+        display: true,
+        message: "Admin Secret Key Invalid",
+      });
+      setTimeout(() => {
+        setErrorMessageDisplay({
+          display: false,
+          message: "",
+        });
+      }, 2000);
+    }
+  };
+
+  const handleCancel = () => {
+    setAdminSecretKey("");
+    setUserConfirmationCardDisplay(false);
+  };
+
   const remainingSlots =
     eventDetail.eventMaxParicipationLimit -
     eventDetail.eventCurrentParticipation;
 
-  const [detailDisplay, setDetailDisplay] = useState(false);
   return (
-    <div
-      key={index}
-      className="w-full sm:w-fit h-fit block gap-5 bg-white rounded-[20px] border border-black p-[10px]"
-    >
-      <div className="flex justify-center overflow-hidden w-full sm:w-[300px]  h-[200px]">
-        <div
-          className="duration-300 rounded-[17px] w-full sm:w-[300px]"
-          style={
-            detailDisplay
-              ? { transform: "translateY(-100%)" }
-              : {
-                  transform: "translateY(0)",
-                }
-          }
-        >
-          <div>
-            <Image
-              src={eventDetail.eventPhotoLink}
-              alt="lol"
-              className="object-cover object-top rounded-[17px] w-full sm:w-[300px] h-[200px]"
-            />
-          </div>
-          <div className="text-center font-medium  w-full sm:w-[300px] h-[200px] bg-slate-200 flex justify-center items-center rounded-[17px]   py-[10px] ">
-            <div className="px-[10px] text-[14px]  sm:text-[16px]">
+    <>
+      {/* user confirmation card */}
+      <div
+        className={`w-full min-h-[100vh] fixed top-0 z-[50] flex justify-center items-center
+          bg-[#00000069] backdrop-blur-sm  duration-300 p-[20px]  ${
+            userConfirmationCardDisplay ? "flex" : "hidden"
+          } `}
+      >
+        <div className="p-[20px] w-full sm:w-fit border border-black rounded-[20px] bg-white shadow-xl ">
+          <form onSubmit={handleSubmit}>
+            <div>
+              <span className="text-[15px] sm:text-[16px]">
+                Confirm your <span className="font-bold">Admin Secret Key</span>{" "}
+                to add{" "}
+                <span className="font-bold">{eventDetail.eventName} Event</span>
+              </span>
+            </div>
+            <div className="mt-[10px]">
+              <input
+                type="password"
+                name="adminSecretKey"
+                placeholder="Secret Key"
+                required
+                tabIndex={-1}
+                value={adminSecretKey}
+                className="w-[250px] sm:w-[350px] placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                onChange={(e) => {
+                  setAdminSecretKey(e.target.value);
+                }}
+              />
+            </div>
+            <div className="flex gap-[15px] mt-[10px]">
               <div>
-                <span>
-                  Registration Fee: <b>₹{eventDetail.eventRegistrationFee}</b>/-{" "}
-                  {eventDetail.eventType}
-                </span>
+                <button
+                  type="submit"
+                  className=" px-[10px] py-[8px] bg-red-600 text-white text-[13px] sm:text-[14px] font-semibold rounded-[8px]"
+                >
+                  Confirm & Delete
+                </button>
               </div>
-              <div className="w-full h-[0.5px] bg-black rounded-full my-[5px]" />
               <div>
-                <span>Date: {eventDetail.eventDate}</span>
+                <button
+                  type="button"
+                  className=" px-[10px] py-[8px] bg-black text-white text-[13px] sm:text-[14px] font-semibold rounded-[8px]"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
               </div>
-              <div className="w-full h-[0.5px] bg-black rounded-full my-[5px]" />
+            </div>
+          </form>
+        </div>
+      </div>
 
-              <div>
-                <span>Time: {eventDetail.eventTime}</span>
-              </div>
-              <div className="w-full h-[0.5px] bg-black rounded-full my-[5px]" />
+      <div
+        key={index}
+        className="w-full sm:w-fit h-fit block gap-5 bg-white rounded-[20px] border border-black p-[10px]"
+      >
+        <div className="flex justify-center overflow-hidden w-full sm:w-[300px]  h-[200px]">
+          <div
+            className="duration-300 rounded-[17px] w-full sm:w-[300px]"
+            style={
+              detailDisplay
+                ? { transform: "translateY(-100%)" }
+                : {
+                    transform: "translateY(0)",
+                  }
+            }
+          >
+            <div>
+              <Image
+                src={eventDetail.eventPhoto}
+                alt="lol"
+                className="object-cover object-top rounded-[17px] w-full sm:w-[300px] h-[200px]"
+                width={300}
+                height={200}
+                priority={true}
+              />
+            </div>
+            <div className="text-center font-medium  w-full sm:w-[300px] h-[200px] bg-slate-200 flex justify-center items-center rounded-[17px]   py-[10px] ">
+              <div className="px-[10px] text-[14px]  sm:text-[16px]">
+                <div>
+                  <span>
+                    Registration Fee: <b>₹{eventDetail.eventRegistrationFee}</b>
+                    /- {eventDetail.eventType}
+                  </span>
+                </div>
+                <div className="w-full h-[0.5px] bg-black rounded-full my-[5px]" />
+                <div>
+                  <span>Date: {eventDetail.eventDate}</span>
+                </div>
+                <div className="w-full h-[0.5px] bg-black rounded-full my-[5px]" />
 
-              <div>
-                <span>Venue: {eventDetail.eventVenue}</span>
-              </div>
-              <div className="w-full mt-[10px]">
-                <Link href="/">
-                  <button className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]">
-                    Download Brochure
-                  </button>
-                </Link>
+                <div>
+                  <span>Time: {eventDetail.eventTime}</span>
+                </div>
+                <div className="w-full h-[0.5px] bg-black rounded-full my-[5px]" />
+
+                <div>
+                  <span>Venue: {eventDetail.eventVenue}</span>
+                </div>
+                <div className="w-full mt-[10px]">
+                  <Link
+                    href={eventDetail.eventBrochure}
+                    target="blank"
+                    tabIndex={-1}
+                  >
+                    <button
+                      className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]"
+                      tabIndex={-1}
+                    >
+                      Download Brochure
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="mt-[10px]  text-center  ">
-        <div>
-          <span className="text-[20px] font-extrabold">
-            {eventDetail.eventName}
-          </span>
+        <div className="mt-[10px]  text-center  ">
+          <div>
+            <span className="text-[20px] font-extrabold">
+              {eventDetail.eventName}
+            </span>
+          </div>
+
+          {remainingSlots <= 0 ? (
+            <div>
+              <span className="text-[14px] sm:text-[16px] font-medium">
+                Registration Full
+              </span>
+            </div>
+          ) : (
+            <div>
+              <span className="text-[14px] sm:text-[16px] font-medium">
+                Slots Left: {remainingSlots}/
+                {eventDetail.eventMaxParicipationLimit}
+              </span>
+            </div>
+          )}
         </div>
+        <div className="text-center duration-300 "></div>
 
-        {remainingSlots <= 0 ? (
-          <div>
-            <span className="text-[14px] sm:text-[16px] font-medium">
-              Registration Full
-            </span>
-          </div>
-        ) : (
-          <div>
-            <span className="text-[14px] sm:text-[16px] font-medium">
-              Slots Left: {remainingSlots}
-              /80
-            </span>
-          </div>
-        )}
-      </div>
-      <div className="text-center duration-300 "></div>
+        <div className="w-full flex  justify-center gap-2 mt-[10px]">
+          {remainingSlots > 0 ? (
+            <div className="w-full">
+              <Link
+                href={eventDetail.eventRegistrationLink}
+                target="blank"
+                tabIndex={-1}
+              >
+                <button
+                  className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]"
+                  tabIndex={-1}
+                >
+                  Register
+                </button>
+              </Link>
+            </div>
+          ) : (
+            ""
+          )}
 
-      <div className="w-full flex  justify-center gap-2 mt-[10px]">
-        {remainingSlots > 0 ? (
           <div className="w-full">
-            <Link href="">
-              <button className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]">
-                Register
+            <button
+              className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]"
+              onClick={(e) => {
+                setDetailDisplay(!detailDisplay);
+              }}
+              tabIndex={-1}
+            >
+              {detailDisplay ? "Hide Details" : "Show Details"}
+            </button>
+          </div>
+        </div>
+        <div className="w-full flex  justify-center gap-2 mt-[8px]">
+          <div className="w-full">
+            <Link href={`/updateEvent/${eventDetail._id}`} tabIndex={-1}>
+              <button
+                className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-green-600 
+            rounded-[8px]"
+                tabIndex={-1}
+              >
+                Update Event
               </button>
             </Link>
           </div>
-        ) : (
-          ""
-        )}
-
-        <div className="w-full">
-          <button
-            className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]"
-            onClick={(e) => {
-              setDetailDisplay(!detailDisplay);
-            }}
-          >
-            {detailDisplay ? "Hide Details" : "Show Details"}
-          </button>
-        </div>
-      </div>
-      <div className="w-full flex  justify-center gap-2 mt-[8px]">
-        <div className="w-full">
-          <Link href="">
-            <button
-              className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-green-600 
-            rounded-[8px]"
-            >
-              Update
-            </button>
-          </Link>
-        </div>
-        <div className="w-full">
-          <Link href="">
+          <div className="w-full">
+            {/* <Link href=""> */}
             <button
               className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-red-600 
             rounded-[8px]"
+              onClick={(e) => {
+                setUserConfirmationCardDisplay(true);
+              }}
+              tabIndex={-1}
             >
-              Delete
+              Delete Event
             </button>
-          </Link>
+            {/* </Link> */}
+          </div>
         </div>
+        {errorMessageDisplay["display"] && (
+          <div className=" w-[calc(100%-40px)] sm:w-fit text-center fixed left-[50%] z-[48] rounded-[10px] -translate-x-[50%] bottom-0 my-[20px] px-[10px] py-[7px] bg-red-500">
+            <span className="font-semibold text-[12px] sm:text-[13px] text-white">
+              {errorMessageDisplay["message"]}
+            </span>
+          </div>
+        )}
+
+        {successMessageDisplay["display"] && (
+          <div className=" w-[calc(100%-40px)] sm:w-fit text-center fixed left-[50%] z-[48] rounded-[10px] -translate-x-[50%] bottom-0 my-[20px] px-[10px] py-[7px] bg-green-500 ">
+            <span className="font-semibold text-[12px] sm:text-[13px] text-white">
+              {successMessageDisplay["message"]}
+            </span>
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 
-export default EVENT_REG_CARDS;
+export default EVENT_CARDS;

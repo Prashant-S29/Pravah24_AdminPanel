@@ -1,20 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const NEW_EVENT_CARD = () => {
-  const [formState, setFormState] = useState(true);
+const UPDATE_EVENT_CARD = (particularEventDetails: any) => {
+  const router = useRouter();
 
+  useEffect(() => {
+    const user_data = localStorage.getItem("user_data");
+    if (!user_data) {
+      router.push("/");
+    }
+  });
+
+  const [changeImage, setChangeImage] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
+  const [isImageChanged, setIsImageChanged] = useState(false);
+
+  const [changeBrochure, setChangeBrochure] = useState(false);
   const [brochureUploading, setBrochureUploading] = useState(false);
+  const [isBrochureChanged, setIsBrochureChanged] = useState(false);
 
   const [assetsUploadStatus, setAssetsUploadStatus] = useState({
     eventImageStatus: false,
     eventBrochureStatus: false,
   });
-
-  const router = useRouter();
 
   const [errorMessageDisplay, setErrorMessageDisplay] = useState({
     display: false,
@@ -28,19 +38,24 @@ const NEW_EVENT_CARD = () => {
   const [userConfirmationCardDisplay, setUserConfirmationCardDisplay] =
     useState(false);
 
+  const particularEventDetail =
+    particularEventDetails["particularEventDetails"];
+
   const [eventFormData, setEventFormData] = useState({
-    eventName: "",
-    eventPhoto: "",
-    eventCategoryID: "",
-    eventType: "",
-    eventRegistrationFee: "",
-    eventRegistrationLink: "",
-    eventDate: "",
-    eventTime: "",
-    eventVenue: "",
-    eventBrochure: "",
-    eventMaxParicipationLimit: "",
-    eventCurrentParticipation: "0",
+    eventName: particularEventDetail["eventName"],
+    eventPhoto: particularEventDetail["eventPhoto"],
+    eventCategoryID: particularEventDetail["eventCategoryID"],
+    eventType: particularEventDetail["eventType"],
+    eventRegistrationFee: particularEventDetail["eventRegistrationFee"],
+    eventRegistrationLink: particularEventDetail["eventRegistrationLink"],
+    eventDate: particularEventDetail["eventDate"],
+    eventTime: particularEventDetail["eventTime"],
+    eventVenue: particularEventDetail["eventVenue"],
+    eventBrochure: particularEventDetail["eventBrochure"],
+    eventMaxParicipationLimit:
+      particularEventDetail["eventMaxParicipationLimit"],
+    eventCurrentParticipation:
+      particularEventDetail["eventCurrentParticipation"],
   });
 
   const handleInputChange = (e: any) => {
@@ -51,31 +66,34 @@ const NEW_EVENT_CARD = () => {
     }));
   };
 
-  const addEvent = async () => {
+  const undateEvent = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(eventFormData),
-      });
-      if (res.ok) {
-        setSuccessMessageDisplay({
-          display: true,
-          message: "Successfully added the event",
-        });
-        setTimeout(() => {
-          setSuccessMessageDisplay({
-            display: false,
-            message: "",
-          });
-        }, 2000);
-        router.push("/");
-        router.refresh();
-      } else {
-        throw new Error("Failed to add an events");
+      const particularEventID = particularEventDetail["_id"];
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/${particularEventID}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(eventFormData),
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Error in updating event details");
       }
+      setSuccessMessageDisplay({
+        display: true,
+        message: "Successfully updated the event",
+      });
+      setTimeout(() => {
+        setSuccessMessageDisplay({
+          display: false,
+          message: "",
+        });
+      }, 2000);
+      router.push("/");
+      router.refresh();
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +103,7 @@ const NEW_EVENT_CARD = () => {
     e.preventDefault();
     if (adminSecretKey === process.env.NEXT_PUBLIC_ADMIN_SERCET_KEY) {
       setUserConfirmationCardDisplay(false);
-      await addEvent();
+      await undateEvent();
       setAdminSecretKey("");
     } else {
       setAdminSecretKey("");
@@ -112,56 +130,15 @@ const NEW_EVENT_CARD = () => {
     router.push("/");
   };
 
-  const handelAddEventCall = () => {
-    // console.log(eventFormData);
-    if (eventFormData.eventPhoto == "") {
-      setErrorMessageDisplay({
-        display: true,
-        message: "Issue in uploading image. Try again",
-      });
-      setTimeout(() => {
-        setErrorMessageDisplay({
-          display: false,
-          message: "",
-        });
-      }, 2000);
-    } else if (
-      eventFormData.eventName !== "" &&
-      eventFormData.eventPhoto !== "" &&
-      eventFormData.eventCategoryID !== "" &&
-      eventFormData.eventType !== "" &&
-      eventFormData.eventRegistrationFee !== "" &&
-      eventFormData.eventRegistrationLink !== "" &&
-      eventFormData.eventDate !== "" &&
-      eventFormData.eventTime !== "" &&
-      eventFormData.eventVenue !== "" &&
-      eventFormData.eventBrochure !== "" &&
-      eventFormData.eventMaxParicipationLimit !== "" &&
-      eventFormData.eventCurrentParticipation !== ""
-    ) {
-      setUserConfirmationCardDisplay(true);
-    } else {
-      setErrorMessageDisplay({
-        display: true,
-        message: "Invalid Request. Pls check the form again",
-      });
-      setTimeout(() => {
-        setErrorMessageDisplay({
-          display: false,
-          message: "",
-        });
-      }, 2000);
-    }
-  };
-
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
+    setIsImageChanged(true);
     setImageUploading(true);
     setAssetsUploadStatus({
       eventImageStatus: false,
       eventBrochureStatus: assetsUploadStatus.eventBrochureStatus,
     });
-    setFormState(false);
+    // setFormState(false);
     const fileInput = e.currentTarget;
 
     const formData = new FormData();
@@ -196,13 +173,11 @@ const NEW_EVENT_CARD = () => {
         });
         eventFormData.eventPhoto = data.url;
         setImageUploading(false);
-        setFormState(true);
+        // setFormState(true);
       } else {
         throw new Error("Error uploading asset");
       }
     } catch (error) {
-      setImageUploading(false);
-      setFormState(false);
       setErrorMessageDisplay({
         display: true,
         message: "Error in uploading asset. Please try again",
@@ -220,12 +195,13 @@ const NEW_EVENT_CARD = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     e.preventDefault();
+    setIsBrochureChanged(true);
     setBrochureUploading(true);
     setAssetsUploadStatus({
       eventImageStatus: assetsUploadStatus.eventImageStatus,
       eventBrochureStatus: false,
     });
-    setFormState(false);
+    // setFormState(false);
     const fileInput = e.currentTarget;
 
     const formData = new FormData();
@@ -260,14 +236,12 @@ const NEW_EVENT_CARD = () => {
         });
         eventFormData.eventBrochure = data.url;
         setBrochureUploading(false);
-        setFormState(true);
+        // setFormState(true);
       } else {
         throw new Error("Error uploading asset");
       }
     } catch (error) {
-      setBrochureUploading(false);
-      setFormState(false);
-      // console.log(error);
+      console.log(error);
       setErrorMessageDisplay({
         display: true,
         message: "Error in uploading asset. Please try again",
@@ -320,7 +294,7 @@ const NEW_EVENT_CARD = () => {
                   type="submit"
                   className=" px-[10px] py-[8px] bg-green-600 text-white text-[13px] sm:text-[14px] font-semibold rounded-[8px]"
                 >
-                  Confirm & Add
+                  Confirm & Update
                 </button>
               </div>
               <div>
@@ -337,8 +311,8 @@ const NEW_EVENT_CARD = () => {
         </div>
       </div>
       <div className="pb-[20px]  px-[20px]">
-        <form className="flex w-full flex-wrap justify-center ">
-          <div className="w-full">
+        <form className="flex justify-center">
+          <div>
             <div className="px-0 lg:px-[100px] xl:px-[300px] w-full flex justify-center  gap-x-[15px] flex-wrap">
               <div className="mt-[5px] w-full sm:w-[350px]">
                 <div>
@@ -353,27 +327,22 @@ const NEW_EVENT_CARD = () => {
                   required
                   tabIndex={-1}
                   value={eventFormData["eventName"]}
-                  className="w-full placeholder:text-gray-500 px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                   onChange={handleInputChange}
                 />
               </div>
               <div className="mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Photo
-                  </span>
-                </div>
-                <div className="flex items-center justify-end">
-                  <input
-                    type="file"
-                    accept=".png, .jpg"
-                    name="eventPhoto"
-                    required
-                    tabIndex={-1}
-                    className="w-full  placeholder:text-gray-500 file:hidden  px-[10px] text-[14px]    py-[8px] bg-white rounded-[8px] border border-black"
-                    onChange={handleImageUpload}
-                  />
-                  <div className=" absolute mr-[15px]">
+                <div className="flex items-center gap-[7px]">
+                  <div>
+                    <span className="font-bold text-[14px] md:text-[15px]">
+                      Event Photo Link
+                    </span>
+                  </div>
+                  <div
+                    className={` ${
+                      changeImage ? "block" : "hidden"
+                    } -mr-[15px]`}
+                  >
                     <div
                       className={` aspect-square duration-300 ${
                         imageUploading && "animate-ping"
@@ -385,9 +354,55 @@ const NEW_EVENT_CARD = () => {
                     />
                   </div>
                 </div>
+                <div className="flex justify-end items-center w-full sm:w-[350px]">
+                  <input
+                    type="text"
+                    name="eventPhoto"
+                    placeholder="Event Image"
+                    required
+                    tabIndex={-1}
+                    value={eventFormData["eventPhoto"]}
+                    className={`w-full placeholder:text-gray-500 px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black ${
+                      changeImage ? "hidden" : "block"
+                    }`}
+                    onChange={handleInputChange}
+                  />
+                  <div
+                    className={`${
+                      changeImage ? "block" : "hidden"
+                    } flex items-center justify-end w-full sm:w-[350px]`}
+                  >
+                    <input
+                      type="file"
+                      accept=".png, .jpg"
+                      name="eventPhoto"
+                      required
+                      tabIndex={-1}
+                      className="w-full placeholder:text-gray-500 px-[10px] text-[14px] file:hidden     py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleImageUpload}
+                    />
+                  </div>
+                  <div
+                    className={`absolute ${
+                      isImageChanged ? "hidden" : "block"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      tabIndex={-1}
+                      className=" m-[5px] px-[8px] py-[6px] text-center text-white text-[10px] font-medium rounded-[7px] flex justify-center items-center 
+                     bg-black "
+                      onClick={(e) => {
+                        setChangeImage(!changeImage);
+                      }}
+                    >
+                      <span>{changeImage ? "cancle" : "change"}</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-[5px] w-full sm:w-[350px]">
+              <div className="mt-[5px]  w-full sm:w-[350px]">
                 <div>
                   <span className="font-bold text-[14px] md:text-[15px]">
                     Event Category
@@ -396,7 +411,7 @@ const NEW_EVENT_CARD = () => {
 
                 <select
                   name="eventCategoryID"
-                  className="w-full  px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                  className="w-full px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                   required
                   tabIndex={-1}
                   value={eventFormData["eventCategoryID"]}
@@ -413,7 +428,7 @@ const NEW_EVENT_CARD = () => {
                   <option value="Esports Event">Esports Event</option>
                 </select>
               </div>
-              <div className="mt-[5px] w-full sm:w-[350px]">
+              <div className=" mt-[5px] w-full sm:w-[350px]">
                 <div>
                   <span className="font-bold text-[14px] md:text-[15px]">
                     Event Type
@@ -421,18 +436,18 @@ const NEW_EVENT_CARD = () => {
                 </div>
                 <select
                   name="eventType"
-                  className="w-full  px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                  className="w-full px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                   required
                   tabIndex={-1}
                   value={eventFormData["eventType"]}
                   onChange={handleInputChange}
                 >
-                  <option value="select">Select</option>
+                  <option value="Select">Select</option>
                   <option value="Team">Team</option>
                   <option value="Individual">Individual</option>
                 </select>
               </div>
-              <div className="mt-[5px] w-full sm:w-[350px]">
+              <div className=" mt-[5px] w-full sm:w-[350px]">
                 <div>
                   <span className="font-bold text-[14px] md:text-[15px]">
                     Event Registration Fee
@@ -445,11 +460,11 @@ const NEW_EVENT_CARD = () => {
                   required
                   tabIndex={-1}
                   value={eventFormData["eventRegistrationFee"]}
-                  className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="mt-[5px] w-full sm:w-[350px]">
+              <div className=" mt-[5px] w-full sm:w-[350px]">
                 <div>
                   <span className="font-bold text-[14px] md:text-[15px]">
                     Event Registration Link
@@ -462,11 +477,11 @@ const NEW_EVENT_CARD = () => {
                   required
                   tabIndex={-1}
                   value={eventFormData["eventRegistrationLink"]}
-                  className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="mt-[5px] w-full sm:w-[350px]">
+              <div className=" mt-[5px] w-full sm:w-[350px]">
                 <div>
                   <span className="font-bold text-[14px] md:text-[15px]">
                     Event Date
@@ -479,11 +494,11 @@ const NEW_EVENT_CARD = () => {
                   required
                   tabIndex={-1}
                   value={eventFormData["eventDate"]}
-                  className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="mt-[5px] w-full sm:w-[350px]">
+              <div className=" mt-[5px] w-full sm:w-[350px]">
                 <div>
                   <span className="font-bold text-[14px] md:text-[15px]">
                     Event Time
@@ -496,11 +511,11 @@ const NEW_EVENT_CARD = () => {
                   required
                   tabIndex={-1}
                   value={eventFormData["eventTime"]}
-                  className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="mt-[5px] w-full sm:w-[350px]">
+              <div className=" mt-[5px] w-full sm:w-[350px]">
                 <div>
                   <span className="font-bold text-[14px] md:text-[15px]">
                     Event Venue
@@ -513,27 +528,22 @@ const NEW_EVENT_CARD = () => {
                   required
                   tabIndex={-1}
                   value={eventFormData["eventVenue"]}
-                  className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                   onChange={handleInputChange}
                 />
               </div>
               <div className="mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Brochure
-                  </span>
-                </div>
-                <div className="flex items-center justify-end">
-                  <input
-                    type="file"
-                    accept=".pdf"
-                    name="eventBrochure"
-                    required
-                    tabIndex={-1}
-                    className="w-full  placeholder:text-gray-500 file:hidden px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
-                    onChange={handleBrochureUpload}
-                  />
-                  <div className=" absolute mr-[15px]">
+                <div className="flex items-center gap-[7px]">
+                  <div>
+                    <span className="font-bold text-[14px] md:text-[15px]">
+                      Event Brochure Link
+                    </span>
+                  </div>
+                  <div
+                    className={` ${
+                      changeBrochure ? "block" : "hidden"
+                    } -mr-[15px]`}
+                  >
                     <div
                       className={` aspect-square duration-300 ${
                         brochureUploading && "animate-ping"
@@ -542,11 +552,57 @@ const NEW_EVENT_CARD = () => {
                           ? "bg-green-600 w-[10px]"
                           : "bg-black w-[7px]"
                       } rounded-full`}
-                    />{" "}
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end items-center w-full sm:w-[350px]">
+                  <input
+                    type="text"
+                    name="eventBrochure"
+                    placeholder="Event Brochure"
+                    required
+                    tabIndex={-1}
+                    value={eventFormData["eventBrochure"]}
+                    className={`w-full placeholder:text-gray-500 px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black ${
+                      changeBrochure ? "hidden" : "block"
+                    }`}
+                    onChange={handleInputChange}
+                  />
+                  <div
+                    className={`${
+                      changeBrochure ? "block" : "hidden"
+                    } flex items-center justify-end w-full sm:w-[350px]`}
+                  >
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      name="eventBrochure"
+                      required
+                      tabIndex={-1}
+                      className="w-full placeholder:text-gray-500 px-[10px] text-[14px] file:hidden     py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleBrochureUpload}
+                    />
+                  </div>
+                  <div
+                    className={`absolute ${
+                      isBrochureChanged ? "hidden" : "block"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      tabIndex={-1}
+                      className=" m-[5px] px-[8px] py-[6px] text-center text-white text-[10px] font-medium rounded-[7px] flex justify-center items-center 
+                     bg-black "
+                      onClick={(e) => {
+                        setChangeBrochure(!changeBrochure);
+                      }}
+                    >
+                      <span>{changeBrochure ? "cancle" : "change"}</span>
+                    </button>
                   </div>
                 </div>
               </div>
-              <div className="mt-[5px] w-full sm:w-[350px]">
+              <div className=" mt-[5px] w-full sm:w-[350px]">
                 <div>
                   <span className="font-bold text-[14px] md:text-[15px]">
                     Event Max Participation Limit
@@ -559,11 +615,11 @@ const NEW_EVENT_CARD = () => {
                   required
                   tabIndex={-1}
                   value={eventFormData["eventMaxParicipationLimit"]}
-                  className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="mt-[5px] w-full sm:w-[350px]">
+              <div className=" mt-[5px] w-full sm:w-[350px]">
                 <div>
                   <span className="font-bold text-[14px] md:text-[15px]">
                     Event Current Participation
@@ -572,28 +628,29 @@ const NEW_EVENT_CARD = () => {
                 <input
                   type="text"
                   name="eventCurrentParticipation"
+                  // placeholder="0"
                   disabled
                   tabIndex={-1}
                   value={eventFormData["eventCurrentParticipation"]}
-                  className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-[#e2e2e2] rounded-[8px] border border-black"
+                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-[#e2e2e2] rounded-[8px] border border-black"
                 />
               </div>
             </div>
             <div className="flex flex-wrap w-full justify-center gap-x-[20px] gap-y-[10px]  mt-[20px]">
-              <div className="flex w-full sm:w-[350px] justify-center">
+              <div className="flex  w-full sm:w-[350px] justify-center ">
                 <button
                   type="button"
-                  className="w-full  px-[10px] py-[8px] bg-black text-white text-[14px] font-semibold rounded-[8px]"
-                  onClick={handelAddEventCall}
+                  className="w-full px-[10px] py-[8px] bg-black text-white text-[14px] font-semibold rounded-[8px]"
+                  onClick={(e) => setUserConfirmationCardDisplay(true)}
                   tabIndex={-1}
                 >
-                  Add Event
+                  Update Event
                 </button>
               </div>
-              <div className="flex w-full sm:w-[350px] justify-center">
+              <div className=" flex w-full sm:w-[350px] justify-center ">
                 <button
                   type="button"
-                  className="w-full  px-[10px] py-[8px] bg-black text-white text-[14px] font-semibold rounded-[8px]"
+                  className="w-full px-[10px] py-[8px] bg-black text-white text-[14px] font-semibold rounded-[8px]"
                   onClick={handleCancelUpdate}
                   tabIndex={-1}
                 >
@@ -603,7 +660,6 @@ const NEW_EVENT_CARD = () => {
             </div>
           </div>
         </form>
-
         {errorMessageDisplay["display"] && (
           <div className=" w-[calc(100%-40px)] sm:w-fit text-center fixed left-[50%] z-[48] rounded-[10px] -translate-x-[50%] bottom-0 my-[20px] px-[10px] py-[7px] bg-red-500">
             <span className="font-semibold text-[12px] sm:text-[13px] text-white">
@@ -624,4 +680,4 @@ const NEW_EVENT_CARD = () => {
   );
 };
 
-export default NEW_EVENT_CARD;
+export default UPDATE_EVENT_CARD;
