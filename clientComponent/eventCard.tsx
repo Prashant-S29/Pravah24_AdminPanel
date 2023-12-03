@@ -183,14 +183,14 @@ const EVENT_CARDS = ({
                 <div className="w-full mt-[10px]">
                   <Link
                     href={eventDetail.eventBrochure}
-                    target="blank"
+                    // target="blank"
                     tabIndex={-1}
                   >
                     <button
                       className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]"
                       tabIndex={-1}
                     >
-                      Download Brochure
+                      See Brochure
                     </button>
                   </Link>
                 </div>
