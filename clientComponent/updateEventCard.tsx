@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const UPDATE_EVENT_CARD = (particularEventDetails: any) => {
+  const axios = require("axios");
+  const qs = require("qs");
   const router = useRouter();
 
   useEffect(() => {
@@ -66,6 +68,56 @@ const UPDATE_EVENT_CARD = (particularEventDetails: any) => {
     }));
   };
 
+  const sendUpdate = () => {
+    const message = `
+    ADMIN PANEL UPDATE - EVENT UPDATED
+for more info check here: https://pravah2k24-admin-panel.vercel.app/
+  `;
+
+    const data = qs.stringify({
+      token: process.env.NEXT_PUBLIC_WHATSAPP_TOKEN,
+      to: process.env.NEXT_PUBLIC_WHATSAPP_GROUP_ID,
+      body: message,
+    });
+
+    const config = {
+      method: "post",
+      url: process.env.NEXT_PUBLIC_WHATSAPP_URL,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response: any) {
+        // console.log(JSON.stringify(response.data));
+        setSuccessMessageDisplay({
+          display: true,
+          message: "upadate sent on whatsapp",
+        });
+        setTimeout(() => {
+          setSuccessMessageDisplay({
+            display: false,
+            message: "",
+          });
+        }, 2000);
+      })
+      .catch(function (error: any) {
+        // console.log("whatsapp error", error);
+        setErrorMessageDisplay({
+          display: true,
+          message: "Unable to send upadate on whatsapp",
+        });
+        setTimeout(() => {
+          setErrorMessageDisplay({
+            display: false,
+            message: "",
+          });
+        }, 2000);
+      });
+  };
+
   const undateEvent = async () => {
     try {
       const particularEventID = particularEventDetail["_id"];
@@ -104,6 +156,7 @@ const UPDATE_EVENT_CARD = (particularEventDetails: any) => {
     if (adminSecretKey === process.env.NEXT_PUBLIC_ADMIN_SERCET_KEY) {
       setUserConfirmationCardDisplay(false);
       await undateEvent();
+      sendUpdate();
       setAdminSecretKey("");
     } else {
       setAdminSecretKey("");

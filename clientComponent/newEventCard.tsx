@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const NEW_EVENT_CARD = () => {
+  const axios = require("axios");
+  const qs = require("qs");
+
   const [formState, setFormState] = useState(true);
 
   const [imageUploading, setImageUploading] = useState(false);
@@ -81,11 +84,63 @@ const NEW_EVENT_CARD = () => {
     }
   };
 
+  const sendUpdate = () => {
+    const message = `
+ADMIN PANEL UPDATE - NEW EVENT CREATED
+EVENT NAME: ${eventFormData["eventName"]}
+EVENT PHOTO: ${eventFormData["eventPhoto"]}
+    `;
+
+    const data = qs.stringify({
+      token: process.env.NEXT_PUBLIC_WHATSAPP_TOKEN,
+      to: process.env.NEXT_PUBLIC_WHATSAPP_GROUP_ID,
+      body: message,
+    });
+
+    const config = {
+      method: "post",
+      url: process.env.NEXT_PUBLIC_WHATSAPP_URL,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response: any) {
+        console.log(JSON.stringify(response.data));
+        setSuccessMessageDisplay({
+          display: true,
+          message: "upadate sent on whatsapp",
+        });
+        setTimeout(() => {
+          setSuccessMessageDisplay({
+            display: false,
+            message: "",
+          });
+        }, 2000);
+      })
+      .catch(function (error: any) {
+        console.log("whatsapp error", error);
+        setErrorMessageDisplay({
+          display: true,
+          message: "Unable to send upadate on whatsapp",
+        });
+        setTimeout(() => {
+          setErrorMessageDisplay({
+            display: false,
+            message: "",
+          });
+        }, 2000);
+      });
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (adminSecretKey === process.env.NEXT_PUBLIC_ADMIN_SERCET_KEY) {
       setUserConfirmationCardDisplay(false);
       await addEvent();
+      sendUpdate();
       setAdminSecretKey("");
     } else {
       setAdminSecretKey("");
@@ -108,13 +163,24 @@ const NEW_EVENT_CARD = () => {
     setUserConfirmationCardDisplay(false);
   };
 
-  const handleCancelUpdate = () => {
+  const handleCalcelCall = () => {
     router.push("/");
   };
 
   const handelAddEventCall = () => {
     // console.log(eventFormData);
     if (eventFormData.eventPhoto == "") {
+      setErrorMessageDisplay({
+        display: true,
+        message: "Issue in uploading image. Try again",
+      });
+      setTimeout(() => {
+        setErrorMessageDisplay({
+          display: false,
+          message: "",
+        });
+      }, 2000);
+    } else if (eventFormData.eventBrochure == "") {
       setErrorMessageDisplay({
         display: true,
         message: "Issue in uploading image. Try again",
@@ -253,7 +319,6 @@ const NEW_EVENT_CARD = () => {
 
       if (response.ok) {
         const data = await response.json();
-        // console.log(data);
         setAssetsUploadStatus({
           eventImageStatus: assetsUploadStatus.eventImageStatus,
           eventBrochureStatus: true,
@@ -267,7 +332,6 @@ const NEW_EVENT_CARD = () => {
     } catch (error) {
       setBrochureUploading(false);
       setFormState(false);
-      // console.log(error);
       setErrorMessageDisplay({
         display: true,
         message: "Error in uploading asset. Please try again",
@@ -369,8 +433,12 @@ const NEW_EVENT_CARD = () => {
                     accept=".png, .jpg"
                     name="eventPhoto"
                     required
+                    disabled={brochureUploading}
                     tabIndex={-1}
-                    className="w-full  placeholder:text-gray-500 file:hidden  px-[10px] text-[14px]    py-[8px] bg-white rounded-[8px] border border-black"
+                    className={`w-full  placeholder:text-gray-500 file:hidden  px-[10px] text-[14px]    py-[8px]
+                    ${
+                      brochureUploading ? "bg-gray-200" : "bg-white"
+                    } rounded-[8px] border border-black`}
                     onChange={handleImageUpload}
                   />
                   <div className=" absolute mr-[15px]">
@@ -529,8 +597,12 @@ const NEW_EVENT_CARD = () => {
                     accept=".pdf"
                     name="eventBrochure"
                     required
+                    disabled={imageUploading}
                     tabIndex={-1}
-                    className="w-full  placeholder:text-gray-500 file:hidden px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                    className={`w-full  placeholder:text-gray-500 file:hidden px-[10px] text-[14px] py-[8px]
+                     ${
+                       imageUploading ? "bg-gray-200" : "bg-white"
+                     } rounded-[8px] border border-black`}
                     onChange={handleBrochureUpload}
                   />
                   <div className=" absolute mr-[15px]">
@@ -594,10 +666,10 @@ const NEW_EVENT_CARD = () => {
                 <button
                   type="button"
                   className="w-full  px-[10px] py-[8px] bg-black text-white text-[14px] font-semibold rounded-[8px]"
-                  onClick={handleCancelUpdate}
+                  onClick={handleCalcelCall}
                   tabIndex={-1}
                 >
-                  Cancle
+                  Cancel
                 </button>
               </div>
             </div>
