@@ -55,7 +55,9 @@ const ADMINPANEL_LOGIN = () => {
       }, 2000);
       setLoginButtonStatus(true);
       setLoginButtonText("Redirecting.....");
-      router.push("/");
+      setTimeout(() => {
+        router.push("/");
+      }, 5000);
       localStorage.setItem("user_data", JSON.stringify({ adminID }));
     } else {
       setErrorMessageDisplay(true);
@@ -107,22 +109,26 @@ const ADMINPANEL_LOGIN = () => {
                 />
               </div>
               <div className="flex justify-center">
-                <button
-                  type="submit"
-                  disabled={loginButtonStatus ? true : false}
-                  className={`w-full px-[10px] py-[8px]  text-white text-[14px] font-semibold rounded-[10px]`}
-                  style={
-                    loginButtonStatus
-                      ? { backgroundColor: "gray" }
-                      : { backgroundColor: "black" }
-                  }
-                >
-                  {loginButtonText}
-                </button>
+                {loginButtonStatus ? (
+                  <button
+                    type="submit"
+                    disabled
+                    className={`w-full px-[10px] py-[8px]  text-white bg-gray-500 cursor-not-allowed text-[14px] font-semibold rounded-[10px]`}
+                  >
+                    {loginButtonText}
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className={`w-full px-[10px] py-[8px]  text-white bg-black text-[14px] font-semibold rounded-[10px]`}
+                  >
+                    {loginButtonText}
+                  </button>
+                )}
               </div>
             </div>
           </form>
-          
+
           {errorMessageDisplay && (
             <div className=" w-[calc(100%-40px)] sm:w-fit text-center fixed left-[50%] z-[48] rounded-[10px] -translate-x-[50%] bottom-0 my-[20px] px-[10px] py-[7px] bg-red-500">
               <span className="font-semibold text-[12px] sm:text-[13px] text-white">
