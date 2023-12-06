@@ -43,12 +43,7 @@ export async function POST(request) {
 export async function GET() {
     await connectMongoDB();
     const pravahEventsList = await pravah24_DB.find();
-    return new NextResponse(JSON.stringify({ pravahEventsList }), {
-        headers: {
-            'Access-Control-Allow-Origin': "*",
-            'Content-Type': 'application/json',
-        }
-    })
+    return NextResponse.json({ pravahEventsList })
 }
 
 export async function DELETE(request) {
