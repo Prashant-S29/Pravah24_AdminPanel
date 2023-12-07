@@ -5,27 +5,9 @@ import Link from "next/link";
 
 import EVENT_CARDS from "./eventCard";
 
-// const getEventDetails = async () => {
-//   try {
-//     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}`, {
-//       cache: "no-store",
-//     });
-//     const allEventList = res.json();
-
-//     if (!res.ok) {
-//       throw new Error("Failed to fetch events");
-//     }
-//     // console.log(allEventList);
-//     return allEventList;
-//   } catch (error) {
-//     console.log("Error:  ", error);
-//   }
-// };
-
 import { getEventDetails } from "@/libs/fetchData";
 import PRELOADER_CARD from "./preLoaderCard";
 
-// export default async function EVENTS_LIST() {
 const EVENTS_LIST = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState<any>({});
@@ -37,23 +19,21 @@ const EVENTS_LIST = () => {
 
       if (data["pravahEventsList"]) {
         // setTimeout(() => {
-          setIsLoading(false);
+        setIsLoading(false);
         // }, 2000);
       }
 
       setEvents(data);
-      console.log("data", data);
+      // console.log("data", data);
       // console.log("events", events);
     };
     fetchData();
   }, []);
-  console.log("events", events);
-
-  // const events = (await getEventDetails()) || undefined;
+  // console.log("events", events);
 
   return (
     <>
-      <div className="w-full min-h-screen">
+      <div className="w-full">
         <div className="mt-[20px] text-center">
           <span className="text-[32px] font-black">All Events</span>
         </div>

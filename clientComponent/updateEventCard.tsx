@@ -70,7 +70,8 @@ const UPDATE_EVENT_CARD = (particularEventDetails: any) => {
 
   const sendUpdate = () => {
     const message = `
-    ADMIN PANEL UPDATE - EVENT UPDATED
+    *ADMIN PANEL UPDATE*
+EVENT UPDATED
 for more info check here: https://pravah2k24-admin-panel.vercel.app/
   `;
 
@@ -224,6 +225,8 @@ for more info check here: https://pravah2k24-admin-panel.vercel.app/
           eventImageStatus: true,
           eventBrochureStatus: assetsUploadStatus.eventBrochureStatus,
         });
+        eventFormData.eventPhoto = data.url;
+        eventFormData.eventPhoto = "";
         eventFormData.eventPhoto = data.url;
         setImageUploading(false);
         // setFormState(true);
@@ -685,7 +688,7 @@ for more info check here: https://pravah2k24-admin-panel.vercel.app/
                   disabled
                   tabIndex={-1}
                   value={eventFormData["eventCurrentParticipation"]}
-                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-[#e2e2e2] rounded-[8px] border border-black"
+                  className="w-full placeholder:text-gray-500 cursor-not-allowed   px-[10px] text-[14px] py-[8px] bg-[#e2e2e2] rounded-[8px] border border-black"
                 />
               </div>
             </div>

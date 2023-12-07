@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,17 @@ const EVENT_CARDS = ({
   const axios = require("axios");
   const qs = require("qs");
   const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const [adminNotFoundMessage, setAdminNotFoundMessage] = useState(false);
+
+  useEffect(() => {
+    const admin = localStorage.getItem("user_data");
+    if (admin) {
+      setIsAdmin(true);
+    }
+  }, []);
+
   const [detailDisplay, setDetailDisplay] = useState(false);
   const [adminSecretKey, setAdminSecretKey] = useState("");
   const [userConfirmationCardDisplay, setUserConfirmationCardDisplay] =
@@ -74,7 +85,8 @@ const EVENT_CARDS = ({
 
   const sendUpdate = () => {
     const message = `
-ADMIN PANEL UPDATE - EVENT DELETED
+*ADMIN PANEL UPDATE*
+EVENT DELETED
 EVENT NAME: ${eventDetail.eventName}
     `;
 
@@ -183,6 +195,34 @@ EVENT NAME: ${eventDetail.eventName}
               </div>
             </div>
           </form>
+        </div>
+      </div>
+
+      <div
+        className={`w-full min-h-[100vh] fixed top-0 z-[50] flex justify-center items-center
+          bg-[#000000ac] backdrop-blur-sm  duration-300 p-[20px]  ${
+            adminNotFoundMessage ? "flex" : "hidden"
+          } `}
+      >
+        <div className="p-[20px] w-full sm:w-fit border border-black rounded-[20px] bg-white shadow-xl ">
+          <div>
+            <span>
+              <span className="font-bold">You are in Guest Mode.</span>
+              <br />
+              <span>To make these changes, please login as admin.</span>
+            </span>
+          </div>
+          <div className="mt-[10px]">
+            <button
+              type="button"
+              className=" px-[10px] py-[8px] bg-black text-white text-[12px] sm:text-[13px] font-semibold rounded-[8px]"
+              onClick={() => {
+                setAdminNotFoundMessage(false);
+              }}
+            >
+              I Understood
+            </button>
+          </div>
         </div>
       </div>
 
@@ -307,33 +347,61 @@ EVENT NAME: ${eventDetail.eventName}
             </button>
           </div>
         </div>
-        <div className="w-full flex  justify-center gap-2 mt-[8px]">
-          <div className="w-full">
-            <Link href={`/updateEvent/${eventDetail._id}`} tabIndex={-1}>
-              <button
-                className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-green-600 
+        {isAdmin ? (
+          <div className="w-full flex  justify-center gap-2 mt-[8px]">
+            <div className="w-full">
+              <Link href={`/updateEvent/${eventDetail._id}`} tabIndex={-1}>
+                <button
+                  className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-green-600 
             rounded-[8px]"
+                  tabIndex={-1}
+                >
+                  Update Event
+                </button>
+              </Link>
+            </div>
+            <div className="w-full">
+              {/* <Link href=""> */}
+              <button
+                className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-red-600 
+            rounded-[8px]"
+                onClick={(e) => {
+                  setUserConfirmationCardDisplay(true);
+                }}
                 tabIndex={-1}
+              >
+                Delete Event
+              </button>
+              {/* </Link> */}
+            </div>
+          </div>
+        ) : (
+          <div className="w-full flex  justify-center gap-2 mt-[8px]">
+            <div className="w-full">
+              <button
+                className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-green-600 rounded-[8px]"
+                tabIndex={-1}
+                onClick={() => {
+                  setAdminNotFoundMessage(true);
+                }}
               >
                 Update Event
               </button>
-            </Link>
-          </div>
-          <div className="w-full">
-            {/* <Link href=""> */}
-            <button
-              className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-red-600 
+            </div>
+            <div className="w-full">
+              <button
+                className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-red-600 
             rounded-[8px]"
-              onClick={(e) => {
-                setUserConfirmationCardDisplay(true);
-              }}
-              tabIndex={-1}
-            >
-              Delete Event
-            </button>
-            {/* </Link> */}
+                tabIndex={-1}
+                onClick={() => {
+                  setAdminNotFoundMessage(true);
+                }}
+              >
+                Delete Event
+              </button>
+            </div>
           </div>
-        </div>
+        )}
         {errorMessageDisplay["display"] && (
           <div className=" w-[calc(100%-40px)] sm:w-fit text-center fixed left-[50%] z-[48] rounded-[10px] -translate-x-[50%] bottom-0 my-[20px] px-[10px] py-[7px] bg-red-500">
             <span className="font-semibold text-[12px] sm:text-[13px] text-white">

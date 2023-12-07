@@ -11,14 +11,15 @@ const HOME = () => {
 
   useEffect(() => {
     const user_data = localStorage.getItem("user_data");
-    if (!user_data) {
+    const guest_data = localStorage.getItem("guest_data");
+    if (!user_data && !guest_data) {
       router.push("/login");
     }
   });
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full min-h-[calc(100vh-35px)] ">
         <NAVBAR />
         <EVENTS_LIST />
       </div>

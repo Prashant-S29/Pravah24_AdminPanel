@@ -12,10 +12,13 @@ const ADMINPANEL_LOGIN = () => {
 
   useEffect(() => {
     const user_data = localStorage.getItem("user_data");
+    const guest_data = localStorage.getItem("guest_data");
     if (user_data) {
       setLoginButtonStatus(true);
       setLoginButtonText("Redirecting.....");
       router.push("/");
+    } else if (guest_data) {
+      
     } else {
       setLoginButtonStatus(false);
       setLoginButtonText("Login");
@@ -55,10 +58,11 @@ const ADMINPANEL_LOGIN = () => {
       }, 2000);
       setLoginButtonStatus(true);
       setLoginButtonText("Redirecting.....");
-      setTimeout(() => {
-        router.push("/");
-      }, 5000);
+      // setTimeout(() => {
+      router.push("/");
+      // }, 5000);
       localStorage.setItem("user_data", JSON.stringify({ adminID }));
+      localStorage.removeItem("guest_data");
     } else {
       setErrorMessageDisplay(true);
       setTimeout(() => {
@@ -69,9 +73,15 @@ const ADMINPANEL_LOGIN = () => {
     setLoginButtonStatus(false);
   };
 
+  const handleGuestLogin = () => {
+    localStorage.setItem("guest_data", JSON.stringify({ guestID: "NA" }));
+    localStorage.removeItem("user_data");
+    router.push("/");
+  };
+
   return (
     <>
-      <div className="w-full min-h-[100vh] flex justify-center items-center">
+      <div className="w-full min-h-[calc(100vh-35px)] flex justify-center items-center">
         <div className="w-full">
           <div className="text-center leading-none ">
             <span className=" text-[20px] font-extrabold">PRAVAH{"'"}24</span>
@@ -128,6 +138,27 @@ const ADMINPANEL_LOGIN = () => {
               </div>
             </div>
           </form>
+          <div className="flex justify-center px-[20px] ">
+            <div className="w-full sm:w-[350px]">
+              <div className="flex justify-center my-[5px] items-center gap-2">
+                <div className="w-[100px] h-[0.5px] bg-black rounded-full" />
+                <div>
+                  <span className="text-[14px]">OR</span>
+                </div>
+                <div className="w-[100px] h-[0.5px] bg-black rounded-full" />
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className={`w-full px-[10px] py-[8px]  text-white bg-gray-500
+                  text-[14px] font-semibold rounded-[10px]`}
+                  onClick={handleGuestLogin}
+                >
+                  Login as Guest
+                </button>
+              </div>
+            </div>
+          </div>
 
           {errorMessageDisplay && (
             <div className=" w-[calc(100%-40px)] sm:w-fit text-center fixed left-[50%] z-[48] rounded-[10px] -translate-x-[50%] bottom-0 my-[20px] px-[10px] py-[7px] bg-red-500">
