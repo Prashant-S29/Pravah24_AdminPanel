@@ -99,11 +99,19 @@ const NAVBAR = () => {
             <span className="text-[15px] sm:text-[16px]">Visit Website</span>
           </Link>
         </div>
-        <div className="mt-[5px]">
-          <Link href="/addNew">
-            <span className="text-[15px] sm:text-[16px]">Add New Event</span>
-          </Link>
-        </div>
+        {userType === "Guest" ? (
+          <div>
+            <Link href="/addNew_dummy">
+              <span className="text-[15px] sm:text-[16px]">Add New Event</span>
+            </Link>
+          </div>
+        ) : (
+          <div>
+            <Link href="/addNew">
+              <span className="text-[15px] sm:text-[16px]">Add New Event</span>
+            </Link>
+          </div>
+        )}
       </div>
     </>
   );
