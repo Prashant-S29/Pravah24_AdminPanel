@@ -184,7 +184,7 @@ const DUMMY_EVENT_CARD = () => {
                 setAdminNotFoundMessage(false);
               }}
             >
-              I Understood
+              Ok got it !
             </button>
           </div>
         </div>

@@ -220,7 +220,7 @@ EVENT NAME: ${eventDetail.eventName}
                 setAdminNotFoundMessage(false);
               }}
             >
-              I Understood
+              Ok got it !
             </button>
           </div>
         </div>

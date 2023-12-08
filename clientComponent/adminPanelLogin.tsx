@@ -18,7 +18,7 @@ const ADMINPANEL_LOGIN = () => {
       setLoginButtonText("Redirecting.....");
       router.push("/");
     } else if (guest_data) {
-      
+      router.push("/");
     } else {
       setLoginButtonStatus(false);
       setLoginButtonText("Login");
