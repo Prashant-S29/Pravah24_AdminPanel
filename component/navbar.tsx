@@ -89,7 +89,7 @@ const NAVBAR = () => {
       <div
         className={`w-full  h-[80px] duration-200 ${
           showMenu ? "mt-0" : "-mt-[80px] "
-        } fixed  p-[10px] bg-black text-white`}
+        } fixed z-40  p-[10px] bg-black text-white`}
       >
         <div>
           <Link
