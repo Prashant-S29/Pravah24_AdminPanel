@@ -35,10 +35,7 @@ const NAVBAR = () => {
         <div className="flex justify-center items-center gap-[10px] sm:gap-[20px] font-medium">
           <div className=" gap-[20px] hidden sm:flex items-center">
             <div>
-              <Link
-                href="https://pravah.skit.ac.in/events/testEvent"
-                target="blank"
-              >
+              <Link href="https://pravah.skit.ac.in/events/" target="blank">
                 <span className="text-[15px] sm:text-[16px]">
                   Visit Website
                 </span>

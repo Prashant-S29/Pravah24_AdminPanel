@@ -18,6 +18,15 @@ const EVENT_CARDS = ({
   const [isAdmin, setIsAdmin] = useState(false);
 
   const [adminNotFoundMessage, setAdminNotFoundMessage] = useState(false);
+  const [showRegistrationConfirmation, setRegistrationConfirmation] =
+    useState(false);
+
+  const [registrationTeamType, setRegistrationTeamType] = useState(1);
+
+  const [registrationLinkAndPrice, setRegistrationLinkAndPrice] = useState({
+    link: "",
+    price: "",
+  });
 
   useEffect(() => {
     const admin = localStorage.getItem("user_data");
@@ -47,7 +56,6 @@ const EVENT_CARDS = ({
         method: "DELETE",
       }
     );
-    router.refresh();
     setSuccessMessageDisplay({
       display: true,
       message: "Successfully deleted the event",
@@ -58,6 +66,7 @@ const EVENT_CARDS = ({
         message: "",
       });
     }, 2000);
+    router.refresh();
   };
 
   const handleSubmit = (e: any) => {
@@ -65,7 +74,8 @@ const EVENT_CARDS = ({
     if (adminSecretKey === process.env.NEXT_PUBLIC_ADMIN_SERCET_KEY) {
       setUserConfirmationCardDisplay(false);
       deleteEvent();
-      sendUpdate();
+      router.refresh();
+      // sendUpdate();
       setAdminSecretKey("");
     } else {
       setAdminSecretKey("");
@@ -247,15 +257,16 @@ EVENT NAME: ${eventDetail.eventName}
                 alt="lol"
                 className="object-cover object-top rounded-[17px] w-full sm:w-[300px] h-[200px]"
                 width={300}
-                height={200}
+                height={100}
                 priority={true}
               />
             </div>
-            <div className="text-center font-medium  w-full sm:w-[300px] h-[200px] bg-slate-200 flex justify-center items-center rounded-[17px]   py-[10px] ">
+            <div className="text-center font-medium  w-full sm:w-[300px] h-[200px] bg-slate-100 flex justify-center items-center rounded-[17px]   py-[10px] ">
               <div className="px-[10px] text-[14px]  sm:text-[16px]">
                 <div>
                   <span>
-                    Registration Fee: <b>₹{eventDetail.eventRegistrationFee}</b>
+                    Registration Fee:{" "}
+                    <b>₹{eventDetail.eventRegistrationFeeOne}</b>
                     /- {eventDetail.eventType}
                   </span>
                 </div>
@@ -318,18 +329,19 @@ EVENT NAME: ${eventDetail.eventName}
         <div className="w-full flex  justify-center gap-2 mt-[10px]">
           {remainingSlots > 0 ? (
             <div className="w-full">
-              <Link
-                href={eventDetail.eventRegistrationLink}
-                target="blank"
+              <button
+                className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]"
                 tabIndex={-1}
+                onClick={() => {
+                  setRegistrationConfirmation(true);
+                  setRegistrationLinkAndPrice({
+                    link: eventDetail.eventRegistrationLinkOne,
+                    price: eventDetail.eventRegistrationFeeOne,
+                  });
+                }}
               >
-                <button
-                  className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]"
-                  tabIndex={-1}
-                >
-                  Register
-                </button>
-              </Link>
+                Register
+              </button>
             </div>
           ) : (
             ""
@@ -418,6 +430,329 @@ EVENT NAME: ${eventDetail.eventName}
           </div>
         )}
       </div>
+
+      {showRegistrationConfirmation && (
+        <div
+          className="z-[100] w-full min-h-screen top-0 left-0 fixed flex justify-center p-[20px] items-center bg-[#00000048] 
+        backdrop-blur-[5px] select-none"
+        >
+          <div className="p-[20px] bg-white border border-gray-500 rounded-[20px]">
+            <div>
+              <div>
+                <span className="text-[14px]">
+                  Confirm my Registration in{" "}
+                  <span className="font-bold">{eventDetail.eventName} </span>
+                  as
+                </span>
+              </div>
+              <div className="text-[14px]">
+                {eventDetail.eventRegistrationLinkOne != "" && (
+                  <div
+                    className={`w-full px-[10px] py-2  cursor-pointer rounded-[7px] border-[2px]  leading-snug mt-2
+                    ${
+                      registrationTeamType === 1
+                        ? "border-green-500 bg-white"
+                        : " bg-gray-100"
+                    }
+                    `}
+                    onClick={() => {
+                      setRegistrationTeamType(1);
+
+                      setRegistrationLinkAndPrice({
+                        link: eventDetail.eventRegistrationLinkOne,
+                        price: eventDetail.eventRegistrationFeeOne,
+                      });
+                    }}
+                  >
+                    <div>
+                      <span className="font-bold capitalize">
+                        {eventDetail.eventRegistrationTeamTypeOne.split("-")[0]}
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Team Size -{" "}
+                        {eventDetail.eventRegistrationTeamTypeOne.split("-")[1]}
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Registration Fee - ₹
+                        {eventDetail.eventRegistrationFeeOne}/-
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {eventDetail.eventRegistrationLinkTwo != "" && (
+                  <div
+                    className={`w-full px-[10px] py-2  cursor-pointer rounded-[7px] border-[2px]  leading-snug mt-2  ${
+                      registrationTeamType === 2
+                        ? "border-green-500 bg-white"
+                        : " bg-gray-100"
+                    }`}
+                    onClick={() => {
+                      setRegistrationTeamType(2);
+
+                      setRegistrationLinkAndPrice({
+                        link: eventDetail.eventRegistrationLinkTwo,
+                        price: eventDetail.eventRegistrationFeeTwo,
+                      });
+                    }}
+                  >
+                    <div>
+                      <span className="font-bold capitalize">
+                        {eventDetail.eventRegistrationTeamTypeTwo.split("-")[0]}
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Team Size -{" "}
+                        {eventDetail.eventRegistrationTeamTypeTwo.split("-")[1]}
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Registration Fee - ₹
+                        {eventDetail.eventRegistrationFeeTwo}/-
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {eventDetail.eventRegistrationLinkThree != "" && (
+                  <div
+                    className={`w-full px-[10px] py-2  cursor-pointer rounded-[7px] border-[2px]  leading-snug mt-2  ${
+                      registrationTeamType === 3
+                        ? "border-green-500 bg-white"
+                        : " bg-gray-100"
+                    }`}
+                    onClick={() => {
+                      setRegistrationTeamType(3);
+
+                      setRegistrationLinkAndPrice({
+                        link: eventDetail.eventRegistrationLinkThree,
+                        price: eventDetail.eventRegistrationFeeThree,
+                      });
+                    }}
+                  >
+                    <div>
+                      <span className="font-bold capitalize">
+                        {
+                          eventDetail.eventRegistrationTeamTypeThree.split(
+                            "-"
+                          )[0]
+                        }
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Team Size -{" "}
+                        {
+                          eventDetail.eventRegistrationTeamTypeThree.split(
+                            "-"
+                          )[1]
+                        }
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Registration Fee - ₹
+                        {eventDetail.eventRegistrationFeeThree}/-
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {eventDetail.eventRegistrationLinkFour != "" && (
+                  <div
+                    className={`w-full px-[10px] py-2  cursor-pointer rounded-[7px] border-[2px]  leading-snug mt-2  ${
+                      registrationTeamType === 4
+                        ? "border-green-500 bg-white"
+                        : " bg-gray-100"
+                    }`}
+                    onClick={() => {
+                      setRegistrationTeamType(4);
+
+                      setRegistrationLinkAndPrice({
+                        link: eventDetail.eventRegistrationLinkFour,
+                        price: eventDetail.eventRegistrationFeeFour,
+                      });
+                    }}
+                  >
+                    {" "}
+                    <div>
+                      <span className="font-bold">
+                        {
+                          eventDetail.eventRegistrationTeamTypeFour.split(
+                            "-"
+                          )[0]
+                        }
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Team Size -{" "}
+                        {
+                          eventDetail.eventRegistrationTeamTypeFour.split(
+                            "-"
+                          )[1]
+                        }
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Registration Fee - ₹
+                        {eventDetail.eventRegistrationFeeFour}/-
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {eventDetail.eventRegistrationLinkFive != "" && (
+                  <div
+                    className={`w-full px-[10px] py-2  cursor-pointer rounded-[7px] border-[2px]  leading-snug mt-2  ${
+                      registrationTeamType === 5
+                        ? "border-green-500 bg-white"
+                        : " bg-gray-100"
+                    }`}
+                    onClick={() => {
+                      setRegistrationTeamType(5);
+
+                      setRegistrationLinkAndPrice({
+                        link: eventDetail.eventRegistrationLinkFive,
+                        price: eventDetail.eventRegistrationFeeFive,
+                      });
+                    }}
+                  >
+                    {" "}
+                    <div>
+                      <span className="font-bold">
+                        {
+                          eventDetail.eventRegistrationTeamTypeFive.split(
+                            "-"
+                          )[0]
+                        }
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Team Size -{" "}
+                        {
+                          eventDetail.eventRegistrationTeamTypeFive.split(
+                            "-"
+                          )[1]
+                        }
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Registration Fee - ₹
+                        {eventDetail.eventRegistrationFeeFive}/-
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {eventDetail.eventRegistrationLinkSix != "" && (
+                  <div
+                    className={`w-full px-[10px] py-2  cursor-pointer rounded-[7px] border-[2px]  leading-snug mt-2  ${
+                      registrationTeamType === 6
+                        ? "border-green-500 bg-white"
+                        : " bg-gray-100"
+                    }`}
+                    onClick={() => {
+                      setRegistrationTeamType(6);
+
+                      setRegistrationLinkAndPrice({
+                        link: eventDetail.eventRegistrationLinkSix,
+                        price: eventDetail.eventRegistrationFeeSix,
+                      });
+                    }}
+                  >
+                    {" "}
+                    <div>
+                      <span className="font-bold capitalize">
+                        {eventDetail.eventRegistrationTeamTypeSix.split("-")[0]}
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Team Size -{" "}
+                        {eventDetail.eventRegistrationTeamTypeSix.split("-")[1]}
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Registration Fee - ₹
+                        {eventDetail.eventRegistrationFeeSix}/-
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {eventDetail.eventRegistrationLinkSeven != "" && (
+                  <div
+                    className={`w-full px-[10px] py-2  cursor-pointer rounded-[7px] border-[2px]  leading-snug mt-2  ${
+                      registrationTeamType === 7
+                        ? "border-green-500 bg-white"
+                        : " bg-gray-100"
+                    }`}
+                    onClick={() => {
+                      setRegistrationTeamType(7);
+
+                      setRegistrationLinkAndPrice({
+                        link: eventDetail.eventRegistrationLinkSeven,
+                        price: eventDetail.eventRegistrationFeeSeven,
+                      });
+                    }}
+                  >
+                    {" "}
+                    <div>
+                      <span className="font-bold">
+                        {
+                          eventDetail.eventRegistrationTeamTypeSeven.split(
+                            "-"
+                          )[0]
+                        }
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Team Size -{" "}
+                        {
+                          eventDetail.eventRegistrationTeamTypeSeven.split(
+                            "-"
+                          )[1]
+                        }
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Registration Fee - ₹
+                        {eventDetail.eventRegistrationFeeSeven}/-
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="block sm:flex gap-[15px] ">
+                <div className="w-full">
+                  <Link href={registrationLinkAndPrice.link}>
+                    <button className="w-full mt-3 px-[20px] py-[8px] text-[12px] whitespace-nowrap sm:text-[13px] font-semibold text-white bg-black rounded-[8px]">
+                      Register - ₹{registrationLinkAndPrice.price}/-
+                    </button>
+                  </Link>
+                </div>
+                <div className="w-full">
+                  <button
+                    className="w-full mt-3 px-[20px] py-[8px] whitespace-nowrap text-[12px] sm:text-[13px] font-semibold text-black bg-gray-300 rounded-[8px]"
+                    onClick={() => {
+                      setRegistrationConfirmation(false);
+                    }}
+                  >
+                    cancle and return
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

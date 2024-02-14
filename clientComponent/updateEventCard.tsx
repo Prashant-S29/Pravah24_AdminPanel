@@ -47,9 +47,35 @@ const UPDATE_EVENT_CARD = (particularEventDetails: any) => {
     eventName: particularEventDetail["eventName"],
     eventPhoto: particularEventDetail["eventPhoto"],
     eventCategoryID: particularEventDetail["eventCategoryID"],
-    eventType: particularEventDetail["eventType"],
-    eventRegistrationFee: particularEventDetail["eventRegistrationFee"],
-    eventRegistrationLink: particularEventDetail["eventRegistrationLink"],
+
+    eventRegistrationTeamTypeOne:particularEventDetail["eventRegistrationTeamTypeOne"],
+    eventRegistrationFeeOne: particularEventDetail["eventRegistrationFeeOne"],
+    eventRegistrationLinkOne: particularEventDetail["eventRegistrationLinkOne"],
+
+    eventRegistrationTeamTypeTwo:particularEventDetail["eventRegistrationTeamTypeTwo"],
+    eventRegistrationFeeTwo: particularEventDetail["eventRegistrationFeeTwo"],
+    eventRegistrationLinkTwo: particularEventDetail["eventRegistrationLinkTwo"],
+
+    eventRegistrationTeamTypeThree:particularEventDetail["eventRegistrationTeamTypeThree"],
+    eventRegistrationFeeThree:  particularEventDetail["eventRegistrationFeeThree"],
+    eventRegistrationLinkThree: particularEventDetail["eventRegistrationLinkThree"],
+
+    eventRegistrationTeamTypeFour:particularEventDetail["eventRegistrationTeamTypeFour"],
+    eventRegistrationFeeFour: particularEventDetail["eventRegistrationFeeFour"],
+    eventRegistrationLinkFour:  particularEventDetail["eventRegistrationLinkFour"],
+
+    eventRegistrationTeamTypeFive:particularEventDetail["eventRegistrationTeamTypeFive"],
+    eventRegistrationFeeFive: particularEventDetail["eventRegistrationFeeFive"],
+    eventRegistrationLinkFive:   particularEventDetail["eventRegistrationLinkFive"],
+
+    eventRegistrationTeamTypeSix:particularEventDetail["eventRegistrationTeamTypeSix"],
+    eventRegistrationFeeSix: particularEventDetail["eventRegistrationFeeSix"],
+    eventRegistrationLinkSix: particularEventDetail["eventRegistrationLinkSix"],
+
+    eventRegistrationTeamTypeSeven:particularEventDetail["eventRegistrationTeamTypeSeven"],
+    eventRegistrationFeeSeven:   particularEventDetail["eventRegistrationFeeSeven"],
+    eventRegistrationLinkSeven:   particularEventDetail["eventRegistrationLinkSeven"],
+
     eventDate: particularEventDetail["eventDate"],
     eventTime: particularEventDetail["eventTime"],
     eventVenue: particularEventDetail["eventVenue"],
@@ -366,330 +392,576 @@ for more info check here: https://pravah2k24-admin-panel.vercel.app/
           </form>
         </div>
       </div>
-      <div className="pb-[20px]  px-[20px]">
-        <form className="flex justify-center">
-          <div>
-            <div className="px-0 lg:px-[100px] xl:px-[300px] w-full flex justify-center  gap-x-[15px] flex-wrap">
-              <div className="mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Name
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  name="eventName"
-                  placeholder="Event Name"
-                  required
-                  tabIndex={-1}
-                  value={eventFormData["eventName"]}
-                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="mt-[5px] w-full sm:w-[350px]">
-                <div className="flex items-center gap-[7px]">
+      <div className="pb-[20px]  px-[20px] ">
+        <form className="flex w-full flex-wrap justify-center ">
+          <div className="w-full">
+            <div className="px-0 lg:px-[100px] xl:px-[300px] w-full flex justify-center">
+              <div>
+                <div className="mt-[5px] w-full sm:w-[350px]">
                   <div>
                     <span className="font-bold text-[14px] md:text-[15px]">
-                      Event Photo Link
+                      Event Name
                     </span>
                   </div>
-                  <div
-                    className={` ${
-                      changeImage ? "block" : "hidden"
-                    } -mr-[15px]`}
-                  >
-                    <div
-                      className={` aspect-square duration-300 ${
-                        imageUploading && "animate-ping"
-                      } ${
-                        assetsUploadStatus.eventImageStatus
-                          ? "bg-green-600 w-[10px]"
-                          : "bg-black w-[7px]"
-                      } rounded-full`}
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end items-center w-full sm:w-[350px]">
                   <input
                     type="text"
-                    name="eventPhoto"
-                    placeholder="Event Image"
+                    name="eventName"
+                    placeholder="Event Name"
                     required
                     tabIndex={-1}
-                    value={eventFormData["eventPhoto"]}
-                    className={`w-full placeholder:text-gray-500 px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black ${
-                      changeImage ? "hidden" : "block"
-                    }`}
+                    value={eventFormData["eventName"]}
+                    className="w-full placeholder:text-gray-500 px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                     onChange={handleInputChange}
                   />
-                  <div
-                    className={`${
-                      changeImage ? "block" : "hidden"
-                    } flex items-center justify-end w-full sm:w-[350px]`}
-                  >
+                </div>
+                <div className="mt-[5px] w-full sm:w-[350px]">
+                  <div>
+                    <span className="font-bold text-[14px] md:text-[15px]">
+                      Event Photo
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-end">
                     <input
                       type="file"
                       accept=".png, .jpg"
                       name="eventPhoto"
                       required
+                      disabled={brochureUploading}
                       tabIndex={-1}
-                      className="w-full placeholder:text-gray-500 px-[10px] text-[14px] file:hidden     py-[8px] bg-white rounded-[8px] border border-black"
+                      className={`w-full  placeholder:text-gray-500 file:hidden  px-[10px] text-[14px]    py-[8px]
+                    ${
+                      brochureUploading ? "bg-gray-200" : "bg-white"
+                    } rounded-[8px] border border-black`}
                       onChange={handleImageUpload}
                     />
-                  </div>
-                  <div
-                    className={`absolute ${
-                      isImageChanged ? "hidden" : "block"
-                    }`}
-                  >
-                    <button
-                      type="button"
-                      tabIndex={-1}
-                      className=" m-[5px] px-[8px] py-[6px] text-center text-white text-[10px] font-medium rounded-[7px] flex justify-center items-center 
-                     bg-black "
-                      onClick={(e) => {
-                        setChangeImage(!changeImage);
-                      }}
-                    >
-                      <span>{changeImage ? "cancle" : "change"}</span>
-                    </button>
+                    <div className=" absolute mr-[15px]">
+                      <div
+                        className={` aspect-square duration-300 ${
+                          imageUploading && "animate-ping"
+                        } ${
+                          assetsUploadStatus.eventImageStatus
+                            ? "bg-green-600 w-[10px]"
+                            : "bg-black w-[7px]"
+                        } rounded-full`}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="mt-[5px]  w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Category
-                  </span>
-                </div>
-
-                <select
-                  name="eventCategoryID"
-                  className="w-full px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
-                  required
-                  tabIndex={-1}
-                  value={eventFormData["eventCategoryID"]}
-                  onChange={handleInputChange}
-                >
-                  <option value="Select">Select</option>
-                  <option value="Non Technical Event">
-                    Non Technical Event
-                  </option>
-                  <option value="Technical Event">Technical Event</option>
-                  <option value="Cultural Event">Cultural Event</option>
-                  <option value="Literary Event">Literary Event</option>
-                  <option value="Social Event">Social Event</option>
-                  <option value="Esports Event">Esports Event</option>
-                </select>
-              </div>
-              <div className=" mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Type
-                  </span>
-                </div>
-                <select
-                  name="eventType"
-                  className="w-full px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
-                  required
-                  tabIndex={-1}
-                  value={eventFormData["eventType"]}
-                  onChange={handleInputChange}
-                >
-                  <option value="Select">Select</option>
-                  <option value="Team">Team</option>
-                  <option value="Individual">Individual</option>
-                </select>
-              </div>
-              <div className=" mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Registration Fee
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  name="eventRegistrationFee"
-                  placeholder="Registration Fee"
-                  required
-                  tabIndex={-1}
-                  value={eventFormData["eventRegistrationFee"]}
-                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className=" mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Registration Link
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  name="eventRegistrationLink"
-                  placeholder="Link of ERP registration form"
-                  required
-                  tabIndex={-1}
-                  value={eventFormData["eventRegistrationLink"]}
-                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className=" mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Date
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  name="eventDate"
-                  placeholder="eg: 20th November, 2023"
-                  required
-                  tabIndex={-1}
-                  value={eventFormData["eventDate"]}
-                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className=" mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Time
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  name="eventTime"
-                  placeholder="eg: 12:00 AM - 03:00 PM"
-                  required
-                  tabIndex={-1}
-                  value={eventFormData["eventTime"]}
-                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className=" mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Venue
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  name="eventVenue"
-                  placeholder="Venue"
-                  required
-                  tabIndex={-1}
-                  value={eventFormData["eventVenue"]}
-                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="mt-[5px] w-full sm:w-[350px]">
-                <div className="flex items-center gap-[7px]">
+                <div className="mt-[5px] w-full sm:w-[350px]">
                   <div>
                     <span className="font-bold text-[14px] md:text-[15px]">
-                      Event Brochure Link
+                      Event Category
                     </span>
                   </div>
-                  <div
-                    className={` ${
-                      changeBrochure ? "block" : "hidden"
-                    } -mr-[15px]`}
+
+                  <select
+                    name="eventCategoryID"
+                    className="w-full  px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                    required
+                    tabIndex={-1}
+                    value={eventFormData["eventCategoryID"]}
+                    onChange={handleInputChange}
                   >
-                    <div
-                      className={` aspect-square duration-300 ${
-                        brochureUploading && "animate-ping"
-                      } ${
-                        assetsUploadStatus.eventBrochureStatus
-                          ? "bg-green-600 w-[10px]"
-                          : "bg-black w-[7px]"
-                      } rounded-full`}
+                    <option value="Select">Select</option>
+                    <option value="Non Technical Event">
+                      Non Technical Event
+                    </option>
+                    <option value="Technical Event">Technical Event</option>
+                    <option value="Cultural Event">Cultural Event</option>
+                    <option value="Literary Event">Literary Event</option>
+                    <option value="Social Event">Social Event</option>
+                    <option value="Esports Event">Esports Event</option>
+                  </select>
+                </div>
+                <div className="">
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Team Type - 1 (Type-Number)
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationTeamTypeOne"
+                      placeholder="Registration Team Type"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationTeamTypeOne"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Fee - 1
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationFeeOne"
+                      placeholder="Registration Fee"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationFeeOne"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Link - 1
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationLinkOne"
+                      placeholder="Link of ERP registration form"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationLinkOne"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
-                <div className="flex justify-end items-center w-full sm:w-[350px]">
+                <div className="">
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Team Type - 2 (Type-Number)
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationTeamTypeTwo"
+                      placeholder="Registration Team Type"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationTeamTypeTwo"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Fee - 2
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationFeeTwo"
+                      placeholder="Registration Fee"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationFeeTwo"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Link - 2
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationLinkTwo"
+                      placeholder="Link of ERP registration form"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationLinkTwo"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="">
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Team Type - 3 (Type-Number)
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationTeamTypeThree"
+                      placeholder="Registration Team Type"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationTeamTypeThree"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Fee - 3
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationFeeThree"
+                      placeholder="Registration Fee"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationFeeThree"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Link - 3
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationLinkThree"
+                      placeholder="Link of ERP registration form"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationLinkThree"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="">
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Team Type - 4 (Type-Number)
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationTeamTypeFour"
+                      placeholder="Registration Team Type"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationTeamTypeFour"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Fee - 4
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationFeeFour"
+                      placeholder="Registration Fee"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationFeeFour"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Link - 4
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationLinkFour"
+                      placeholder="Link of ERP registration form"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationLinkFour"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="">
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Team Type - 5 (Type-Number)
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationTeamTypeFive"
+                      placeholder="Registration Team Type"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationTeamTypeFive"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Fee - 5
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationFeeFive"
+                      placeholder="Registration Fee"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationFeeFive"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Link - 5
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationLinkFive"
+                      placeholder="Link of ERP registration form"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationLinkFive"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="">
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Team Type - 6 (Type-Number)
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationTeamTypeSix"
+                      placeholder="Registration Team Type"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationTeamTypeSix"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Fee - 6
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationFeeSix"
+                      placeholder="Registration Fee"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationFeeSix"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Link - 6
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationLinkSix"
+                      placeholder="Link of ERP registration form"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationLinkSix"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="">
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Team Type - 6 (Type-Number)
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationTeamTypeSix"
+                      placeholder="Registration Team Type"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationTeamTypeSix"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Fee - 7
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationFeeSeven"
+                      placeholder="Registration Fee"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationFeeSeven"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-[5px] w-full sm:w-[350px]">
+                    <div>
+                      <span className="font-bold text-[14px] md:text-[15px]">
+                        Event Registration Link - 7
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      name="eventRegistrationLinkSeven"
+                      placeholder="Link of ERP registration form"
+                      required
+                      tabIndex={-1}
+                      value={eventFormData["eventRegistrationLinkSeven"]}
+                      className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-[5px] w-full sm:w-[350px]">
+                  <div>
+                    <span className="font-bold text-[14px] md:text-[15px]">
+                      Event Date
+                    </span>
+                  </div>
                   <input
                     type="text"
-                    name="eventBrochure"
-                    placeholder="Event Brochure"
+                    name="eventDate"
+                    placeholder="eg: 20th November, 2023"
                     required
                     tabIndex={-1}
-                    value={eventFormData["eventBrochure"]}
-                    className={`w-full placeholder:text-gray-500 px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black ${
-                      changeBrochure ? "hidden" : "block"
-                    }`}
+                    value={eventFormData["eventDate"]}
+                    className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                     onChange={handleInputChange}
                   />
-                  <div
-                    className={`${
-                      changeBrochure ? "block" : "hidden"
-                    } flex items-center justify-end w-full sm:w-[350px]`}
-                  >
+                </div>
+                <div className="mt-[5px] w-full sm:w-[350px]">
+                  <div>
+                    <span className="font-bold text-[14px] md:text-[15px]">
+                      Event Time
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    name="eventTime"
+                    placeholder="eg: 12:00 AM - 03:00 PM"
+                    required
+                    tabIndex={-1}
+                    value={eventFormData["eventTime"]}
+                    className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="mt-[5px] w-full sm:w-[350px]">
+                  <div>
+                    <span className="font-bold text-[14px] md:text-[15px]">
+                      Event Venue
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    name="eventVenue"
+                    placeholder="Venue"
+                    required
+                    tabIndex={-1}
+                    value={eventFormData["eventVenue"]}
+                    className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="mt-[5px] w-full sm:w-[350px]">
+                  <div>
+                    <span className="font-bold text-[14px] md:text-[15px]">
+                      Event Brochure
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-end">
                     <input
                       type="file"
                       accept=".pdf"
                       name="eventBrochure"
                       required
+                      disabled={imageUploading}
                       tabIndex={-1}
-                      className="w-full placeholder:text-gray-500 px-[10px] text-[14px] file:hidden     py-[8px] bg-white rounded-[8px] border border-black"
+                      className={`w-full  placeholder:text-gray-500 file:hidden px-[10px] text-[14px] py-[8px]
+                     ${
+                       imageUploading ? "bg-gray-200" : "bg-white"
+                     } rounded-[8px] border border-black`}
                       onChange={handleBrochureUpload}
                     />
-                  </div>
-                  <div
-                    className={`absolute ${
-                      isBrochureChanged ? "hidden" : "block"
-                    }`}
-                  >
-                    <button
-                      type="button"
-                      tabIndex={-1}
-                      className=" m-[5px] px-[8px] py-[6px] text-center text-white text-[10px] font-medium rounded-[7px] flex justify-center items-center 
-                     bg-black "
-                      onClick={(e) => {
-                        setChangeBrochure(!changeBrochure);
-                      }}
-                    >
-                      <span>{changeBrochure ? "cancle" : "change"}</span>
-                    </button>
+                    <div className=" absolute mr-[15px]">
+                      <div
+                        className={` aspect-square duration-300 ${
+                          brochureUploading && "animate-ping"
+                        } ${
+                          assetsUploadStatus.eventBrochureStatus
+                            ? "bg-green-600 w-[10px]"
+                            : "bg-black w-[7px]"
+                        } rounded-full`}
+                      />{" "}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className=" mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Max Participation Limit
-                  </span>
+                <div className="mt-[5px] w-full sm:w-[350px]">
+                  <div>
+                    <span className="font-bold text-[14px] md:text-[15px]">
+                      Event Max Participation Limit
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    name="eventMaxParicipationLimit"
+                    placeholder="Limit eg: 80, 100"
+                    required
+                    tabIndex={-1}
+                    value={eventFormData["eventMaxParicipationLimit"]}
+                    className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
+                    onChange={handleInputChange}
+                  />
                 </div>
-                <input
-                  type="text"
-                  name="eventMaxParicipationLimit"
-                  placeholder="Limit eg: 80, 100"
-                  required
-                  tabIndex={-1}
-                  value={eventFormData["eventMaxParicipationLimit"]}
-                  className="w-full placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className=" mt-[5px] w-full sm:w-[350px]">
-                <div>
-                  <span className="font-bold text-[14px] md:text-[15px]">
-                    Event Current Participation
-                  </span>
+                <div className="mt-[5px] w-full sm:w-[350px]">
+                  <div>
+                    <span className="font-bold text-[14px] md:text-[15px]">
+                      Event Current Participation
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    name="eventCurrentParticipation"
+                    disabled
+                    tabIndex={-1}
+                    value={eventFormData["eventCurrentParticipation"]}
+                    className="w-full  placeholder:text-gray-500 cursor-not-allowed    px-[10px] text-[14px] py-[8px] bg-[#e2e2e2] rounded-[8px] border border-black"
+                  />
                 </div>
-                <input
-                  type="text"
-                  name="eventCurrentParticipation"
-                  // placeholder="0"
-                  disabled
-                  tabIndex={-1}
-                  value={eventFormData["eventCurrentParticipation"]}
-                  className="w-full placeholder:text-gray-500 cursor-not-allowed   px-[10px] text-[14px] py-[8px] bg-[#e2e2e2] rounded-[8px] border border-black"
-                />
               </div>
             </div>
             <div className="flex flex-wrap w-full justify-center gap-x-[20px] gap-y-[10px]  mt-[20px]">
@@ -716,6 +988,7 @@ for more info check here: https://pravah2k24-admin-panel.vercel.app/
             </div>
           </div>
         </form>
+
         {errorMessageDisplay["display"] && (
           <div className=" w-[calc(100%-40px)] sm:w-fit text-center fixed left-[50%] z-[48] rounded-[10px] -translate-x-[50%] bottom-0 my-[20px] px-[10px] py-[7px] bg-red-500">
             <span className="font-semibold text-[12px] sm:text-[13px] text-white">

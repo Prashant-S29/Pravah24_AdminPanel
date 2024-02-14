@@ -1,5 +1,5 @@
 import connectMongoDB from "@/libs/mongodb"
-import pravah24_DB from "@/models/event"
+import pravah24_testDB_one from "@/models/event"
 import { NextResponse } from "next/server";
 
 export async function PUT(request, { params }) {
@@ -7,9 +7,33 @@ export async function PUT(request, { params }) {
     const { eventName,
         eventPhoto,
         eventCategoryID,
-        eventType,
-        eventRegistrationFee,
-        eventRegistrationLink,
+        eventRegistrationTeamTypeOne,
+        eventRegistrationFeeOne,
+        eventRegistrationLinkOne,
+
+        eventRegistrationTeamTypeTwo,
+        eventRegistrationFeeTwo,
+        eventRegistrationLinkTwo,
+
+        eventRegistrationTeamTypeThree,
+        eventRegistrationFeeThree,
+        eventRegistrationLinkThree,
+
+        eventRegistrationTeamTypeFour,
+        eventRegistrationFeeFour,
+        eventRegistrationLinkFour,
+
+        eventRegistrationTeamTypeFive,
+        eventRegistrationLinkFive,
+        eventRegistrationFeeFive,
+
+        eventRegistrationTeamTypeSix,
+        eventRegistrationFeeSix,
+        eventRegistrationLinkSix,
+
+        eventRegistrationTeamTypeSeven,
+        eventRegistrationFeeSeven,
+        eventRegistrationLinkSeven,
         eventDate,
         eventTime,
         eventVenue,
@@ -18,13 +42,37 @@ export async function PUT(request, { params }) {
         eventCurrentParticipation } = await request.json()
 
     await connectMongoDB();
-    await pravah24_DB.findByIdAndUpdate(id, {
+    await pravah24_testDB_one.findByIdAndUpdate(id, {
         eventName,
         eventPhoto,
         eventCategoryID,
-        eventType,
-        eventRegistrationFee,
-        eventRegistrationLink,
+        eventRegistrationTeamTypeOne,
+        eventRegistrationFeeOne,
+        eventRegistrationLinkOne,
+
+        eventRegistrationTeamTypeTwo,
+        eventRegistrationFeeTwo,
+        eventRegistrationLinkTwo,
+
+        eventRegistrationTeamTypeThree,
+        eventRegistrationFeeThree,
+        eventRegistrationLinkThree,
+
+        eventRegistrationTeamTypeFour,
+        eventRegistrationFeeFour,
+        eventRegistrationLinkFour,
+
+        eventRegistrationTeamTypeFive,
+        eventRegistrationLinkFive,
+        eventRegistrationFeeFive,
+
+        eventRegistrationTeamTypeSix,
+        eventRegistrationFeeSix,
+        eventRegistrationLinkSix,
+
+        eventRegistrationTeamTypeSeven,
+        eventRegistrationFeeSeven,
+        eventRegistrationLinkSeven,
         eventDate,
         eventTime,
         eventVenue,
@@ -39,6 +87,6 @@ export async function PUT(request, { params }) {
 export async function GET(request, { params }) {
     const { id } = params
     await connectMongoDB();
-    const particularEvent = await pravah24_DB.findOne({ _id: id })
+    const particularEvent = await pravah24_testDB_one.findOne({ _id: id })
     return NextResponse.json({ particularEvent }, { status: 200 })
 }

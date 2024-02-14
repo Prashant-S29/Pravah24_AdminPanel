@@ -1,4 +1,4 @@
-import pravah24_DB from "@/models/event"
+import pravah24_testDB_one from "@/models/event"
 import connectMongoDB from "@/libs/mongodb"
 
 import { NextResponse } from "next/server";
@@ -9,9 +9,33 @@ export async function POST(request) {
         eventName,
         eventPhoto,
         eventCategoryID,
-        eventType,
-        eventRegistrationFee,
-        eventRegistrationLink,
+        eventRegistrationTeamTypeOne,
+        eventRegistrationFeeOne,
+        eventRegistrationLinkOne,
+
+        eventRegistrationTeamTypeTwo,
+        eventRegistrationFeeTwo,
+        eventRegistrationLinkTwo,
+
+        eventRegistrationTeamTypeThree,
+        eventRegistrationFeeThree,
+        eventRegistrationLinkThree,
+
+        eventRegistrationTeamTypeFour,
+        eventRegistrationFeeFour,
+        eventRegistrationLinkFour,
+
+        eventRegistrationTeamTypeFive,
+        eventRegistrationLinkFive,
+        eventRegistrationFeeFive,
+
+        eventRegistrationTeamTypeSix,
+        eventRegistrationFeeSix,
+        eventRegistrationLinkSix,
+
+        eventRegistrationTeamTypeSeven,
+        eventRegistrationFeeSeven,
+        eventRegistrationLinkSeven,
         eventDate,
         eventTime,
         eventVenue,
@@ -21,13 +45,37 @@ export async function POST(request) {
     } = await request.json()
 
     await connectMongoDB();
-    await pravah24_DB.create({
+    await pravah24_testDB_one.create({
         eventName,
         eventPhoto,
         eventCategoryID,
-        eventType,
-        eventRegistrationFee,
-        eventRegistrationLink,
+        eventRegistrationTeamTypeOne,
+        eventRegistrationFeeOne,
+        eventRegistrationLinkOne,
+
+        eventRegistrationTeamTypeTwo,
+        eventRegistrationFeeTwo,
+        eventRegistrationLinkTwo,
+
+        eventRegistrationTeamTypeThree,
+        eventRegistrationFeeThree,
+        eventRegistrationLinkThree,
+
+        eventRegistrationTeamTypeFour,
+        eventRegistrationFeeFour,
+        eventRegistrationLinkFour,
+
+        eventRegistrationTeamTypeFive,
+        eventRegistrationLinkFive,
+        eventRegistrationFeeFive,
+
+        eventRegistrationTeamTypeSix,
+        eventRegistrationFeeSix,
+        eventRegistrationLinkSix,
+
+        eventRegistrationTeamTypeSeven,
+        eventRegistrationFeeSeven,
+        eventRegistrationLinkSeven,
         eventDate,
         eventTime,
         eventVenue,
@@ -42,7 +90,7 @@ export async function POST(request) {
 
 export async function GET() {
     await connectMongoDB();
-    const pravahEventsList = await pravah24_DB.find();
+    const pravahEventsList = await pravah24_testDB_one.find();
     return new NextResponse(
         JSON.stringify({ pravahEventsList }),
         {
@@ -57,6 +105,6 @@ export async function GET() {
 export async function DELETE(request) {
     const id = request.nextUrl.searchParams.get('id');
     await connectMongoDB();
-    await pravah24_DB.findByIdAndDelete(id);
+    await pravah24_testDB_one.findByIdAndDelete(id);
     return NextResponse.json({ message: "Event deleted successfully" }, { status: 200 })
 }
