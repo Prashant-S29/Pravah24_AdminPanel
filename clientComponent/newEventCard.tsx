@@ -168,7 +168,7 @@ const NEW_EVENT_CARD = () => {
       }, 2000);
     } else if (
       eventFormData.eventName !== "" &&
-      eventFormData.eventPhoto !== "" &&
+      // eventFormData.eventPhoto !== "" &&
       eventFormData.eventCategoryID !== "" &&
       eventFormData.eventRegistrationTeamTypeOne !== "" &&
       eventFormData.eventRegistrationFeeOne !== "" &&

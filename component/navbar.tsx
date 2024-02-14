@@ -42,7 +42,7 @@ const NAVBAR = () => {
               </Link>
             </div>
 
-            {userType === "Guest" ? (
+            {/* {userType === "Guest" ? (
               <div>
                 <Link href="/addNew_dummy">
                   <span className="text-[15px] sm:text-[16px]">
@@ -50,7 +50,7 @@ const NAVBAR = () => {
                   </span>
                 </Link>
               </div>
-            ) : (
+            ) : ( */}
               <div>
                 <Link href="/addNew">
                   <span className="text-[15px] sm:text-[16px]">
@@ -58,7 +58,7 @@ const NAVBAR = () => {
                   </span>
                 </Link>
               </div>
-            )}
+            {/* )} */}
 
             <div className="w-[1px] h-[20px]  bg-black" />
           </div>
