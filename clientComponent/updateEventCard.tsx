@@ -796,16 +796,16 @@ for more info check here: https://pravah2k24-admin-panel.vercel.app/
                   <div className="mt-[5px] w-full sm:w-[350px]">
                     <div>
                       <span className="font-bold text-[14px] md:text-[15px]">
-                        Event Registration Team Type - 6 (Type-Number)
+                        Event Registration Team Type - 7 (Type-Number)
                       </span>
                     </div>
                     <input
                       type="text"
-                      name="eventRegistrationTeamTypeSix"
+                      name="eventRegistrationTeamTypeSeven"
                       placeholder="Registration Team Type"
                       required
                       tabIndex={-1}
-                      value={eventFormData["eventRegistrationTeamTypeSix"]}
+                      value={eventFormData["eventRegistrationTeamTypeSeven"]}
                       className="w-full  placeholder:text-gray-500    px-[10px] text-[14px] py-[8px] bg-white rounded-[8px] border border-black"
                       onChange={handleInputChange}
                     />

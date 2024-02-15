@@ -93,57 +93,6 @@ const EVENT_CARDS = ({
     }
   };
 
-  const sendUpdate = () => {
-    const message = `
-*ADMIN PANEL UPDATE*
-EVENT DELETED
-EVENT NAME: ${eventDetail.eventName}
-    `;
-
-    const data = qs.stringify({
-      token: process.env.NEXT_PUBLIC_WHATSAPP_TOKEN,
-      to: process.env.NEXT_PUBLIC_WHATSAPP_GROUP_ID,
-      body: message,
-    });
-
-    const config = {
-      method: "post",
-      url: process.env.NEXT_PUBLIC_WHATSAPP_URL,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      data: data,
-    };
-
-    axios(config)
-      .then(function (response: any) {
-        // console.log(JSON.stringify(response.data));
-        setSuccessMessageDisplay({
-          display: true,
-          message: "upadate sent on whatsapp",
-        });
-        setTimeout(() => {
-          setSuccessMessageDisplay({
-            display: false,
-            message: "",
-          });
-        }, 2000);
-      })
-      .catch(function (error: any) {
-        // console.log("whatsapp error", error);
-        setErrorMessageDisplay({
-          display: true,
-          message: "Unable to send upadate on whatsapp",
-        });
-        setTimeout(() => {
-          setErrorMessageDisplay({
-            display: false,
-            message: "",
-          });
-        }, 2000);
-      });
-  };
-
   const handleCancel = () => {
     setAdminSecretKey("");
     setUserConfirmationCardDisplay(false);
@@ -437,7 +386,10 @@ EVENT NAME: ${eventDetail.eventName}
         backdrop-blur-[5px] select-none"
         >
           <div className="p-[20px] bg-white border border-gray-500 rounded-[20px]">
-            <div>
+            <div
+              id="listContainer"
+              className={` max-h-[500px] pb-3 overflow-y-scroll`}
+            >
               <div>
                 <span className="text-[14px]">
                   Confirm my Registration in{" "}
@@ -730,24 +682,25 @@ EVENT NAME: ${eventDetail.eventName}
                   </div>
                 )}
               </div>
-              <div className="block sm:flex gap-[15px] ">
-                <div className="w-full">
-                  <Link href={registrationLinkAndPrice.link}>
-                    <button className="w-full mt-3 px-[20px] py-[8px] text-[12px] whitespace-nowrap sm:text-[13px] font-semibold text-white bg-black rounded-[8px]">
-                      Register - ₹{registrationLinkAndPrice.price}/-
-                    </button>
-                  </Link>
-                </div>
-                <div className="w-full">
-                  <button
-                    className="w-full mt-3 px-[20px] py-[8px] whitespace-nowrap text-[12px] sm:text-[13px] font-semibold text-black bg-gray-300 rounded-[8px]"
-                    onClick={() => {
-                      setRegistrationConfirmation(false);
-                    }}
-                  >
-                    cancle and return
+            </div>
+            <div className="block sm:flex gap-[15px] relative ">
+              {/* <div className="w-full h-[90px] absolute -mt-[90px] pointer-events-none bg-gradient-to-t from-white to-[#ffffff30]" /> */}
+              <div className="w-full">
+                <Link href={registrationLinkAndPrice.link}>
+                  <button className="w-full mt-3 px-[20px] py-[8px] text-[12px] whitespace-nowrap sm:text-[13px] font-semibold text-white bg-black rounded-[8px]">
+                    Register - ₹{registrationLinkAndPrice.price}/-
                   </button>
-                </div>
+                </Link>
+              </div>
+              <div className="w-full">
+                <button
+                  className="w-full mt-3 px-[20px] py-[8px] whitespace-nowrap text-[12px] sm:text-[13px] font-semibold text-black bg-gray-300 rounded-[8px]"
+                  onClick={() => {
+                    setRegistrationConfirmation(false);
+                  }}
+                >
+                  cancle and return
+                </button>
               </div>
             </div>
           </div>
