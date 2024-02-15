@@ -235,7 +235,47 @@ const NEW_EVENT_CARD = () => {
           eventImageStatus: true,
           eventBrochureStatus: assetsUploadStatus.eventBrochureStatus,
         });
-        eventFormData.eventPhoto = data.url;
+        // eventFormData.eventPhoto = data.url;
+        setEventFormData({
+          eventName: eventFormData.eventName,
+          eventPhoto: data.url,
+          eventCategoryID: eventFormData.eventCategoryID,
+      
+          eventRegistrationTeamTypeOne: eventFormData.eventRegistrationTeamTypeOne,
+          eventRegistrationFeeOne: eventFormData.eventRegistrationFeeOne,
+          eventRegistrationLinkOne: eventFormData.eventRegistrationLinkOne,
+      
+          eventRegistrationTeamTypeTwo: eventFormData.eventRegistrationTeamTypeTwo,
+          eventRegistrationFeeTwo: eventFormData.eventRegistrationFeeTwo,
+          eventRegistrationLinkTwo: eventFormData.eventRegistrationLinkTwo,
+      
+          eventRegistrationTeamTypeThree: eventFormData.eventRegistrationTeamTypeThree,
+          eventRegistrationFeeThree: eventFormData.eventRegistrationFeeThree,
+          eventRegistrationLinkThree: eventFormData.eventRegistrationLinkThree,
+      
+          eventRegistrationTeamTypeFour: eventFormData.eventRegistrationTeamTypeFour,
+          eventRegistrationFeeFour: eventFormData.eventRegistrationFeeFour,
+          eventRegistrationLinkFour: eventFormData.eventRegistrationLinkFour,
+      
+          eventRegistrationTeamTypeFive: eventFormData.eventRegistrationTeamTypeFive,
+          eventRegistrationLinkFive: eventFormData.eventRegistrationLinkFive,
+          eventRegistrationFeeFive: eventFormData.eventRegistrationFeeFive,
+      
+          eventRegistrationTeamTypeSix: eventFormData.eventRegistrationTeamTypeSix,
+          eventRegistrationFeeSix: eventFormData.eventRegistrationFeeSix,
+          eventRegistrationLinkSix: eventFormData.eventRegistrationLinkSix,
+      
+          eventRegistrationTeamTypeSeven: eventFormData.eventRegistrationTeamTypeSeven,
+          eventRegistrationFeeSeven: eventFormData.eventRegistrationFeeSeven,
+          eventRegistrationLinkSeven: eventFormData.eventRegistrationLinkSeven,
+      
+          eventDate: eventFormData.eventDate,
+          eventTime: eventFormData.eventTime,
+          eventVenue: eventFormData.eventVenue,
+          eventBrochure: eventFormData.eventBrochure,
+          eventMaxParicipationLimit: eventFormData.eventMaxParicipationLimit,
+          eventCurrentParticipation: "0",
+        })
         setImageUploading(false);
         setFormState(true);
       } else {
@@ -298,7 +338,47 @@ const NEW_EVENT_CARD = () => {
           eventImageStatus: assetsUploadStatus.eventImageStatus,
           eventBrochureStatus: true,
         });
-        eventFormData.eventBrochure = data.url;
+        // eventFormData.eventBrochure = data.url;
+        setEventFormData({
+          eventName: eventFormData.eventName,
+          eventPhoto: eventFormData.eventPhoto,
+          eventCategoryID: eventFormData.eventCategoryID,
+      
+          eventRegistrationTeamTypeOne: eventFormData.eventRegistrationTeamTypeOne,
+          eventRegistrationFeeOne: eventFormData.eventRegistrationFeeOne,
+          eventRegistrationLinkOne: eventFormData.eventRegistrationLinkOne,
+      
+          eventRegistrationTeamTypeTwo: eventFormData.eventRegistrationTeamTypeTwo,
+          eventRegistrationFeeTwo: eventFormData.eventRegistrationFeeTwo,
+          eventRegistrationLinkTwo: eventFormData.eventRegistrationLinkTwo,
+      
+          eventRegistrationTeamTypeThree: eventFormData.eventRegistrationTeamTypeThree,
+          eventRegistrationFeeThree: eventFormData.eventRegistrationFeeThree,
+          eventRegistrationLinkThree: eventFormData.eventRegistrationLinkThree,
+      
+          eventRegistrationTeamTypeFour: eventFormData.eventRegistrationTeamTypeFour,
+          eventRegistrationFeeFour: eventFormData.eventRegistrationFeeFour,
+          eventRegistrationLinkFour: eventFormData.eventRegistrationLinkFour,
+      
+          eventRegistrationTeamTypeFive: eventFormData.eventRegistrationTeamTypeFive,
+          eventRegistrationLinkFive: eventFormData.eventRegistrationLinkFive,
+          eventRegistrationFeeFive: eventFormData.eventRegistrationFeeFive,
+      
+          eventRegistrationTeamTypeSix: eventFormData.eventRegistrationTeamTypeSix,
+          eventRegistrationFeeSix: eventFormData.eventRegistrationFeeSix,
+          eventRegistrationLinkSix: eventFormData.eventRegistrationLinkSix,
+      
+          eventRegistrationTeamTypeSeven: eventFormData.eventRegistrationTeamTypeSeven,
+          eventRegistrationFeeSeven: eventFormData.eventRegistrationFeeSeven,
+          eventRegistrationLinkSeven: eventFormData.eventRegistrationLinkSeven,
+      
+          eventDate: eventFormData.eventDate,
+          eventTime: eventFormData.eventTime,
+          eventVenue: eventFormData.eventVenue,
+          eventBrochure: data.url,
+          eventMaxParicipationLimit: eventFormData.eventMaxParicipationLimit,
+          eventCurrentParticipation: "0",
+        })
         setBrochureUploading(false);
         setFormState(true);
       } else {
