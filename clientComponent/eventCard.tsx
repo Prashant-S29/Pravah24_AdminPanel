@@ -388,7 +388,7 @@ const EVENT_CARDS = ({
           <div className="p-[20px] bg-white border border-gray-500 rounded-[20px]">
             <div
               id="listContainer"
-              className={` max-h-[500px] pb-3 overflow-y-scroll`}
+              className={` max-h-[400px] pb-3 overflow-y-scroll`}
             >
               <div>
                 <span className="text-[14px]">
