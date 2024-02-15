@@ -263,13 +263,13 @@ EVENT NAME: ${eventDetail.eventName}
             </div>
             <div className="text-center font-medium  w-full sm:w-[300px] h-[200px] bg-slate-100 flex justify-center items-center rounded-[17px]   py-[10px] ">
               <div className="px-[10px] text-[14px]  sm:text-[16px]">
-                <div>
+                {/* <div>
                   <span>
                     Registration Fee:{" "}
                     <b>₹{eventDetail.eventRegistrationFeeOne}</b>
                     /- {eventDetail.eventType}
                   </span>
-                </div>
+                </div> */}
                 <div className="w-full h-[0.5px] bg-black rounded-full my-[5px]" />
                 <div>
                   <span>Date: {eventDetail.eventDate}</span>
@@ -286,7 +286,7 @@ EVENT NAME: ${eventDetail.eventName}
                 </div>
                 <div className="w-full mt-[10px]">
                   <Link
-                    href={eventDetail.eventBrochure}
+                    href={eventDetail.eventBrochure.replace("http", "https")}
                     // target="blank"
                     tabIndex={-1}
                   >
