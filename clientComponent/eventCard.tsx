@@ -276,25 +276,21 @@ const EVENT_CARDS = ({
         <div className="text-center duration-300 "></div>
 
         <div className="w-full flex  justify-center gap-2 mt-[10px]">
-          {remainingSlots > 0 ? (
-            <div className="w-full">
-              <button
-                className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]"
-                tabIndex={-1}
-                onClick={() => {
-                  setRegistrationConfirmation(true);
-                  setRegistrationLinkAndPrice({
-                    link: eventDetail.eventRegistrationLinkOne,
-                    price: eventDetail.eventRegistrationFeeOne,
-                  });
-                }}
-              >
-                Register
-              </button>
-            </div>
-          ) : (
-            ""
-          )}
+          <div className="w-full">
+            <button
+              className="w-full px-[20px] py-[8px] text-[12px] sm:text-[14px] font-semibold text-white bg-black rounded-[8px]"
+              tabIndex={-1}
+              onClick={() => {
+                setRegistrationConfirmation(true);
+                setRegistrationLinkAndPrice({
+                  link: eventDetail.eventRegistrationLinkOne,
+                  price: eventDetail.eventRegistrationFeeOne,
+                });
+              }}
+            >
+              Register
+            </button>
+          </div>
 
           <div className="w-full">
             <button
