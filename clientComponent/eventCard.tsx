@@ -258,7 +258,7 @@ const EVENT_CARDS = ({
             </span>
           </div>
 
-          {remainingSlots <= 0 ? (
+          {/* {remainingSlots <= 0 ? (
             <div>
               <span className="text-[14px] sm:text-[16px] font-medium">
                 Registration Full
@@ -271,7 +271,7 @@ const EVENT_CARDS = ({
                 {eventDetail.eventMaxParicipationLimit}
               </span>
             </div>
-          )}
+          )} */}
         </div>
         <div className="text-center duration-300 "></div>
 
