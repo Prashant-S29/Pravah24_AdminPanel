@@ -230,7 +230,7 @@ const NEW_EVENT_CARD = () => {
 
       if (response.ok) {
         const data = await response.json();
-        // console.log(data);
+        console.log(data);
         setAssetsUploadStatus({
           eventImageStatus: true,
           eventBrochureStatus: assetsUploadStatus.eventBrochureStatus,
@@ -282,6 +282,7 @@ const NEW_EVENT_CARD = () => {
         throw new Error("Error uploading asset");
       }
     } catch (error) {
+      console.log(error);
       setImageUploading(false);
       setFormState(false);
       setErrorMessageDisplay({
