@@ -413,7 +413,7 @@ const NEW_EVENT_CARD = () => {
           <form onSubmit={handleSubmit}>
             <div>
               <span className="text-[15px] sm:text-[16px]">
-                Confirm your <span className="font-bold">Admin Secret Key</span>{" "}
+                Confirm your <span className="font-bold">Admin Secret  Key</span>{" "}
                 to add{" "}
                 <span className="font-bold">
                   {eventFormData.eventName} Event
