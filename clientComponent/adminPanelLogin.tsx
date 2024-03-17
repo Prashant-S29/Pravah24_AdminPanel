@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import crypto from "crypto";
 import { useRouter } from "next/navigation";
 
 const ADMINPANEL_LOGIN = () => {
@@ -47,7 +47,6 @@ const ADMINPANEL_LOGIN = () => {
   const verifyAdmin = (e: any) => {
     e.preventDefault();
     setLoginButtonStatus(true);
-    // console.log(adminID, adminPassword);
     if (
       adminID === process.env.NEXT_PUBLIC_ADMIN_PANEL_ID &&
       adminPassword === process.env.NEXT_PUBLIC_ADMIN_PANEL_PASSWORD
@@ -61,7 +60,12 @@ const ADMINPANEL_LOGIN = () => {
       // setTimeout(() => {
       router.push("/");
       // }, 5000);
-      localStorage.setItem("user_data", JSON.stringify({ adminID }));
+      localStorage.setItem(
+        "user_data",
+        JSON.stringify({
+          adminSessionToken: crypto.randomBytes(20).toString("hex"),
+        })
+      );
       localStorage.removeItem("guest_data");
     } else {
       setErrorMessageDisplay(true);
@@ -159,7 +163,12 @@ const ADMINPANEL_LOGIN = () => {
               </div>
             </div>
           </div>
-
+          <div className="text-center mt-2 px-5">
+            <span className="text-red-500 text-[12px] sm:text-[13px] font-semibold">
+              All access to the admin panel and database have been revoked and
+              centralized
+            </span>
+          </div>
           {errorMessageDisplay && (
             <div className=" w-[calc(100%-40px)] sm:w-fit text-center fixed left-[50%] z-[48] rounded-[10px] -translate-x-[50%] bottom-0 my-[20px] px-[10px] py-[7px] bg-red-500">
               <span className="font-semibold text-[12px] sm:text-[13px] text-white">
